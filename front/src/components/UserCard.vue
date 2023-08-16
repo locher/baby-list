@@ -1,0 +1,94 @@
+<script setup>
+import BtnDefault from '@/components/BtnDefault.vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+const router = useRouter()
+
+const auth = useAuthStore()
+
+// Properties
+
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true
+  },
+  link: {
+    type: String,
+    required: false
+  },
+  linkTitle: {
+    type: String,
+    required: false,
+    default: 'Voir'
+  },
+  type: {
+    type: String,
+    required: false,
+    default: 'view'
+  }
+})
+
+// Methods
+
+const changePage = () => {
+  if (props.type === 'connection') {
+    // Actions when it's a connection button (from home)
+
+    //Memorize user
+    auth.login(props.user)
+
+    //redirect to me page
+    router.replace({ name: 'me' })
+  } else {
+    // Actions when it's a link to user page
+
+    //redirect to user page
+    router.push({ name: 'user', params: { id: props.user?.id } })
+  }
+}
+
+const getUserAvatarUrl = (pictureId) => {
+  return `./src/assets/img/avatar/avatar${pictureId}.png`
+}
+</script>
+
+<template>
+  <div class="user-card">
+    <div class="user-card__avatar">
+      <img :src="getUserAvatarUrl(user?.picture_id)" alt="" />
+    </div>
+    <div class="user-card__content">
+      <h3 class="user-card__title">{{ user?.name }}</h3>
+      <BtnDefault @click="changePage">{{ linkTitle }}</BtnDefault>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.user-card {
+  padding: calc(var(--padding-global) / 1.5);
+  border-radius: var(--border-radius);
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: center;
+  background-color: var(--color-white);
+  gap: 15px;
+
+  &__title {
+    margin-left: 15px;
+  }
+
+  &__avatar {
+    min-width: 4rem;
+    position: relative;
+
+    &::before {
+      content: url('@/assets/img/blob.svg');
+      position: absolute;
+      left: 50%;
+      top: 50%;
+    }
+  }
+}
+</style>
