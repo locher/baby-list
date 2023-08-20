@@ -2,11 +2,7 @@
 import BtnDefault from '@/components/BtnDefault.vue'
 import { computed, ref } from 'vue'
 import { deleteItem, deleteReservation, insertItem, reserveItem } from '@/apis/item'
-import { useAuthStore } from '@/stores/auth'
-import { useUsersStore } from '@/stores/users'
-
-const authStore = useAuthStore()
-const usersStore = useUsersStore()
+import GiftReservationForm from "@/components/GiftReservationForm.vue";
 
 // Emits
 const emit = defineEmits(['updateItem'])
@@ -44,9 +40,7 @@ const restoreItem = async () => {
 }
 
 const reserveTheItem = async () => {
-  const reservation = await reserveItem(props.item, authStore?.currentUser)
-  props.item.reservation_id = reservation.id
-  props.item.id_user_reservation = authStore.currentUser.id
+  console.log('reserve item')
 }
 
 const cancelReservation = async () => {
@@ -112,16 +106,8 @@ const reservationName = computed(() => {
       >
     </div>
 
-    <!-- Réservé par moi-->
-    <div v-if="props.item.isReserved && isReservedByAuthUser">
-      <p>Réservé par moi</p>
-      <BtnDefault color="white" size="tiny" :border="true" @click="cancelReservation"
-        >Annuler la réservation</BtnDefault
-      >
-    </div>
-
-    <!-- Réservé par qqun d'autre-->
-    <div v-else-if="!props.isAdmin && !isDeleted && props.item.isReserved && isReservedByOther">
+    <!-- Réservé -->
+    <div v-if="!props.isAdmin && !isDeleted && props.item.isReserved">
       <p>Réservé par {{ reservationName }}</p>
     </div>
 
@@ -143,6 +129,9 @@ const reservationName = computed(() => {
       >
     </div>
   </div>
+
+  <GiftReservationForm/>
+
 </template>
 
 <style scoped lang="scss">

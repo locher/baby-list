@@ -9,12 +9,12 @@ class Item {
     this.date_modification = item.date_modification
     this.type = item.type
     this.reservation_id = item.reservation_id
-    this.guest_name = item.guest_name
+    this.reservation_name = item.reservation_name
     this.id_user_reservation = item.id_user_reservation
   }
 
   get isReserved() {
-    return !!(this.guest_name || this.id_user_reservation)
+    return !!(this.reservation_name || this.id_user_reservation)
   }
 }
 

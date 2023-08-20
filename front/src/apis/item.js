@@ -1,7 +1,7 @@
 import { BASE_API } from '@/config/constants'
 import Item from '@/classes/Item'
 
-const ERROR_MESSAGE = 'Erreur lors de la récupération de la liste des items'
+const ERROR_MESSAGE = 'Erreur dans item.js'
 
 export async function getItems(userID, type) {
   try {

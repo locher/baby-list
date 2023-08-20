@@ -33,7 +33,7 @@ itemsRoutes.get('/items/:id', (req, res) => {
 itemsRoutes.get('/items/:type/user/:id', (req, res) => {
     const userId = req.params.id;
     const type = req.params.type
-    connection.query("SELECT items.*, reservations.id as reservation_id ,reservations.id_user_reservation, reservations.guest_name FROM items LEFT JOIN reservations ON items.id = reservations.id_gift WHERE items.id_user_owner = ? AND items.type = ?", [userId, type], (err, results) => {
+    connection.query("SELECT items.*, reservations.id as reservation_id, reservations.reservation_name as reservation_name FROM items LEFT JOIN reservations ON items.id = reservations.id_gift WHERE items.id_user_owner = ?", userId, (err, results) => {
         if (err) {
             console.error('Error getting items:', err);
             res.status(500).send('Error getting items');

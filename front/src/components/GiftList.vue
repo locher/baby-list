@@ -1,9 +1,6 @@
 <script setup>
 import GiftSingle from '@/components/GiftSingle.vue'
 
-// Emits
-const emit = defineEmits(['updateItem'])
-
 // Props
 const props = defineProps({
   items: {
@@ -17,10 +14,6 @@ const props = defineProps({
   }
 })
 
-const emitUpdateItem = (item) => {
-  emit('updateItem', item)
-}
-
 //
 </script>
 
@@ -33,7 +26,6 @@ const emitUpdateItem = (item) => {
         :key="`item${item.id}`"
         :item="item"
         :isAdmin="isAdmin"
-        @update-item="emitUpdateItem"
       />
     </div>
   </section>
