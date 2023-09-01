@@ -11,6 +11,7 @@ class Item {
     this.reservation_id = item.reservation_id
     this.reservation_name = item.reservation_name
     this.id_user_reservation = item.id_user_reservation
+    this.price = item.price
   }
 
   get isReserved() {

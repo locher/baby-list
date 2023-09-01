@@ -6,6 +6,7 @@
     import GiftForm from "@/components/GiftForm.vue";
     import UserForm from "@/components/UserForm.vue";
     import UserInfos from "@/components/UserInfos.vue";
+    import BtnDefault from "@/components/BtnDefault.vue";
 
     // Refs
     const user = ref({})
@@ -51,14 +52,22 @@
 
     <GiftForm v-if="openForm" :id-user="user.id" :itemToUpdate="itemToUpdate" @gift-added="updateGifts"/>
 
-    <button
-        @click="toggleForm"
-        v-html="openForm ? 'Fermer la fenêtre' : 'Ajouter un cadeau'"
-    ></button>
+    <div class="admin__addGift">
+        <BtnDefault @click="toggleForm"
+                    v-html="openForm ? 'Fermer la fenêtre' : 'Ajouter un cadeau'"/>
+    </div>
+
 
     <UserForm v-if="isEditFormOpen" :user="user"/>
 
 </template>
 
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.admin__addGift{
+    display: flex;
+    justify-content: center;
+    margin-top: var(--gap);
+    margin-bottom: var(--gap);
+}
+</style>

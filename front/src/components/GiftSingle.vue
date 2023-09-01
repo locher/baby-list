@@ -3,6 +3,7 @@ import BtnDefault from '@/components/BtnDefault.vue'
 import { computed, ref } from 'vue'
 import { deleteItem, deleteReservation, insertItem, reserveItem } from '@/apis/item'
 import GiftReservationForm from "@/components/GiftReservationForm.vue";
+import PriceRange from "@/components/PriceRange.vue";
 
 // Emits
 const emit = defineEmits(['updateItem'])
@@ -75,6 +76,13 @@ const reservationName = computed(() => {
     return usersStore.users.filter((user) => user.id === props.item.id_user_reservation)[0]?.name
   }
 })
+
+const priceRange = computed(() => {
+    if (props.item.price < 30) return 1;
+    else if (props.item.price >= 30 && props.item.price < 100) return 2;
+    else if (props.item.price >= 100) return 3;
+});
+
 </script>
 
 <template>
@@ -96,14 +104,19 @@ const reservationName = computed(() => {
       <p>{{ props.item.description }}</p>
     </div>
 
+
     <div v-if="props.isAdmin && !isDeleted" class="gift__edit">
       <BtnDefault color="red" size="tiny" :border="true" @click="deleteTheGift"
         >Supprimer</BtnDefault
       >
-      <BtnDefault color="white" size="tiny" :border="true" @click="emit('updateItem', props.item)"
+      <BtnDefault size="tiny" :border="true" @click="emit('updateItem', props.item)"
         >Modifier</BtnDefault
       >
+
+        <PriceRange :range="priceRange" v-if="props.item.price > 0"/>
     </div>
+
+
 
     <!-- Réservé -->
     <div v-if="!props.isAdmin && !isDeleted && props.item.isReserved">
@@ -114,8 +127,10 @@ const reservationName = computed(() => {
       <BtnDefault
         v-if="!props.item.isReserved"
         @click="reserveTheItem"
+        size="tiny"
         >Réserver</BtnDefault
       >
+        <PriceRange :range="priceRange" v-if="props.item.price > 0"/>
     </div>
 
     <div v-if="isDeleted" class="gift__deleted-message">
