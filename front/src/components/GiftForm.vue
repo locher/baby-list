@@ -1,6 +1,7 @@
 <script setup>
 import { insertItem, updateItem } from '@/apis/item'
-import { reactive } from 'vue'
+import {computed, reactive} from 'vue'
+import BtnDefault from "@/components/BtnDefault.vue";
 
 // Props
 const props = defineProps({
@@ -15,27 +16,46 @@ const props = defineProps({
       title: '',
       description: '',
       link: '',
-      type: '',
-      id: ''
+      id: '',
+      price:''
     }
   }
 })
 
+// Emits
+const emit = defineEmits(['giftAdded'])
+
 // Refs
 const item = reactive(props.itemToUpdate)
+
+// Computed
+
+const formattedPrice = computed(() => {
+    const numericValue = item.price?.toString().replace(/[^0-9.]/g, ''); // Garde seulement les chiffres et le point décimal
+    return parseFloat(numericValue); // Convertit la chaîne en nombre à virgule flottante
+})
 
 // Methods
 const addItem = async () => {
   console.log(item)
 
   try {
-    return await insertItem({
+    const result = await insertItem({
       title: props.itemToUpdate.title,
       description: props.itemToUpdate.description,
       link: props.itemToUpdate.link,
-      id_user: props.idUser,
-      type: props.itemToUpdate.type
+      id_user_owner: props.idUser,
+      price: formattedPrice.value
     })
+
+    //Emit the new gift
+    if (result) {
+        clearForm();
+        // Émettre l'événement vers le parent
+        emit('giftAdded', result);
+    }
+
+    return result
   } catch (error) {
     console.error(error)
   }
@@ -49,7 +69,8 @@ const updateTheItem = async () => {
       link: props.itemToUpdate.link.value,
       id_user: props.itemToUpdate.props.idUser,
       type: props.itemToUpdate.type.value,
-      id: props.itemToUpdate.id.value
+      id: props.itemToUpdate.id.value,
+      price: formattedPrice
     })
   } catch (error) {
     console.error(error)
@@ -60,6 +81,7 @@ const clearForm = () => {
   props.itemToUpdate.title = null
   props.itemToUpdate.description = null
   props.itemToUpdate.link = null
+  props.itemToUpdate.price =null
 }
 
 const submitForm = () => {
@@ -81,53 +103,63 @@ const submitForm = () => {
 </script>
 
 <template>
-  <form>
-    <div class="form-wrapper">
-      <h2 v-if="!props.itemToUpdate.id">Ajouter un élément</h2>
-      <h2 v-else>Modifier un élément</h2>
-      <div class="wrap-form">
-        <div class="label-wrap">
-          <label for="">Type d'élément</label>
-        </div>
-        <input type="radio" name="type" value="gift" id="gift" v-model="item.type" />
-        <label for="gift">Cadeau</label>
-        <input type="radio" name="type" value="list" id="list" v-model="item.type" />
-        <label for="list">Liste</label>
-        <input type="radio" name="type" value="donation" id="donation" v-model="item.type" />
-        <label for="donation">Don</label>
+    <div class="wrapper">
+
+
+  <form class="gift gift--edit">
+      <div class="gift__header">
+          <input type="text" placeholder="Désignation" v-model.trim="item.title" />
       </div>
 
-      <div class="wrap-form">
-        <div class="label-wrap">
-          <label for="">Désignation</label>
-        </div>
-        <input type="text" name="designation" v-model.trim="item.title" />
-      </div>
+      <input type="text" placeholder="Lien" v-model.trim="props.itemToUpdate.link" />
+      <textarea placeholder="Description" v-model.trim="props.itemToUpdate.description" rows="3"></textarea>
+      <input type="text" placeholder="Prix" v-model.trim="props.itemToUpdate.price" />
 
-      <div class="wrap-form">
-        <div class="label-wrap">
-          <label for="">Lien</label>
-          <span class="helper">Facultatif</span>
-        </div>
-        <input type="text" name="link" v-model.trim="props.itemToUpdate.link" />
+      <div class="gift__buttons">
+          <BtnDefault v-if="props.itemToUpdate.id" @click.prevent="submitForm">Modifier le cadeau</BtnDefault>
+          <BtnDefault v-else @click.prevent="submitForm">Ajouter à la liste</BtnDefault>
       </div>
-
-      <div class="wrap-form">
-        <div class="label-wrap">
-          <label for="">Description</label>
-          <span class="helper">Facultatif</span>
-        </div>
-        <textarea name="description" v-model.trim="props.itemToUpdate.description"></textarea>
-      </div>
-
-      <div class="bt-wrapper">
-        <button v-if="props.itemToUpdate.id" type="submit" @click.prevent="submitForm">
-          Modifier
-        </button>
-        <button v-else type="submit" @click.prevent="submitForm">Ajouter</button>
-      </div>
-    </div>
   </form>
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+  .gift{
+
+    input[type="text"],
+    input[type="number"],
+    textarea{
+      width: 100%;
+      background-color: transparent;
+      border: 1px solid var(--color-primary);
+      outline: 0;
+      padding: .5em;
+      color: var(--color-primary);
+      border-radius: .7rem;
+      resize: none;
+      appearance: textfield;
+
+      &:focus{
+        outline: 1px solid var(--color-primary);
+      }
+    }
+
+      &__buttons{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+    &--edit{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: var(--gap);
+    }
+
+    &__header{
+      font-size: 1.7rem;
+      line-height: 1.2em;
+    }
+  }
+</style>

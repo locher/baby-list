@@ -88,7 +88,6 @@ const reservationName = computed(() => {
         target="_blank"
         size="tiny"
         :border="true"
-        color="secondary"
         >Voir</BtnDefault
       >
     </div>
@@ -114,9 +113,6 @@ const reservationName = computed(() => {
     <div v-if="!props.isAdmin && !isDeleted" class="gift__edit">
       <BtnDefault
         v-if="!props.item.isReserved"
-        color="white"
-        size="tiny"
-        :border="true"
         @click="reserveTheItem"
         >Réserver</BtnDefault
       >
@@ -130,14 +126,14 @@ const reservationName = computed(() => {
     </div>
   </div>
 
-  <GiftReservationForm/>
+  <GiftReservationForm style="display: none"/>
 
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .gift {
-  --bg-color: var(--color-primary);
-  --text-color: var(--color-white);
+  --bg-color: rgba(var(--color-primary-rgb), .15);
+  --text-color: var(--color-primary);
 
   transition: all ease-in-out 0.2s;
   padding: calc(var(--padding-global) / 2.6);

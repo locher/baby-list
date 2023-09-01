@@ -45,7 +45,7 @@ export function insertItem(item) {
 
       const data = await response.json()
       console.log('Item ajouté avec succès :', data)
-      resolve(true)
+      resolve(data)
     } catch (error) {
       console.error(ERROR_MESSAGE, error)
       reject(error)

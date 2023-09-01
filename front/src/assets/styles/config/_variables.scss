@@ -1,6 +1,6 @@
 :root {
   // Colors RGB
-  --color-primary-rgb: 32, 40, 89;
+  --color-primary-rgb: 125, 210, 178;
 
   // Colors
   --color-primary: rgb(var(--color-primary-rgb));
@@ -14,8 +14,8 @@
   --color-disabled-text: #b0b3bd;
 
   //Fonts
-  --font-heading: 'Roboto Mono';
-  --font-text: 'Lato', sans-serif;
+  --font-heading: 'Quicksand', sans-serif;
+  --font-text: 'Quicksand', sans-serif;
 
   --font-primary: var(--font-text);
   --font-secondary: var(--font-heading);

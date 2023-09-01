@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { insertUser } from '@/apis/users'
 import { format } from 'date-fns'
+import GiftSingle from "@/components/GiftSingle.vue";
 
 // Props
 const props = defineProps({
@@ -77,6 +78,7 @@ const clearForm = () => {
 </script>
 
 <template>
+
   <form>
     <div>
       <label for="name">Prénom</label>

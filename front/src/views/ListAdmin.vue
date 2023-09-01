@@ -1,11 +1,11 @@
 <script setup>
     import {getUser} from "@/apis/users.js";
-    import UserDetails from "@/components/UserDetails.vue";
     import GiftList from "@/components/GiftList.vue";
 
     import {onBeforeMount, ref} from "vue";
     import GiftForm from "@/components/GiftForm.vue";
     import UserForm from "@/components/UserForm.vue";
+    import UserInfos from "@/components/UserInfos.vue";
 
     // Refs
     const user = ref({})
@@ -35,24 +35,26 @@
         isEditFormOpen.value = true
     }
 
+    const updateGifts = (newGift) => {
+        console.log(newGift)
+        gifts.value.push(newGift);
+        openForm.value = false; // Fermez le formulaire après l'ajout du cadeau si nécessaire
+    }
+
 
 </script>
 
 <template>
-    <h1>Admin</h1>
+    <UserInfos :user="user" :is-admin="true"/>
 
-    <UserDetails :user="user"/>
+    <GiftList v-if="gifts.length > 0" :items="gifts" :is-admin="true">   </GiftList>
 
-    <GiftList v-if="gifts.length > 0" :items="gifts" :is-admin="true">
-        <h2>Liste de naissance</h2>
-    </GiftList>
+    <GiftForm v-if="openForm" :id-user="user.id" :itemToUpdate="itemToUpdate" @gift-added="updateGifts"/>
 
     <button
         @click="toggleForm"
         v-html="openForm ? 'Fermer la fenêtre' : 'Ajouter un cadeau'"
     ></button>
-
-    <GiftForm v-if="openForm" :id-user="user.id" :itemToUpdate="itemToUpdate" />
 
     <UserForm v-if="isEditFormOpen" :user="user"/>
 
