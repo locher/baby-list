@@ -28,11 +28,9 @@ const isDeleted = ref(false)
 const deleteTheGift = async () => {
   isDeleted.value = true
 
-  if (await deleteItem(props.item?.id)) {
-    console.log('gift deleted')
-  } else {
-    console.error('gift pas deleted')
-    isDeleted.value = false
+  // si problème lors de la suppression
+  if (!await deleteItem(props.item?.id)) {
+      isDeleted.value = false
   }
 }
 
@@ -45,38 +43,7 @@ const reserveTheItem = async () => {
   console.log('reserve item')
 }
 
-const cancelReservation = async () => {
-  await deleteReservation(props.item)
-  props.item.id_user_reservation = null
-}
-
 // Computed
-
-const isReservedByAuthUser = computed(() => {
-  return props.item.id_user_reservation === authStore.currentUser.id
-})
-
-const isReservedByOther = computed(() => {
-  return props.item.id_user_reservation !== authStore.currentUser.id
-})
-
-const reservationName = computed(() => {
-  // Pas réservé
-  if (!props.item.isReserved) return false
-
-  // Réservé par guest
-  if (props.item.guest_name) return props.item.guest_name
-
-  // Réservé par moi
-  if (isReservedByAuthUser.value) {
-    return 'moi'
-  }
-
-  // Réservé par un autre
-  if (isReservedByOther.value) {
-    return usersStore.users.filter((user) => user.id === props.item.id_user_reservation)[0]?.name
-  }
-})
 
 const priceRange = computed(() => {
     if (props.item.price < 30) return 1;
@@ -132,7 +99,7 @@ const priceRange = computed(() => {
 
     <!-- Réservé -->
     <div v-if="!props.isAdmin && !isDeleted && props.item.isReserved">
-      <p>Réservé par {{ reservationName }}</p>
+      <p>Réservé par personne</p>
     </div>
 
     <div v-if="isDeleted" class="gift__deleted-message">
@@ -166,8 +133,11 @@ const priceRange = computed(() => {
   gap: var(--gap);
 
   &.deleted {
-    --bg-color: var(--color-disabled-bg);
-    --text-color: var(--color-disabled-text);
+    > :not(.gift__deleted-message){
+      filter: grayscale(1);
+    }
+
+    background-color: var(--color-disabled-bg);
   }
 
   &.reserved {
@@ -205,6 +175,8 @@ const priceRange = computed(() => {
     display: flex;
     align-items: center;
     gap: 2rem;
+    grid-column-start: 1;
+    grid-column-end: 3;
 
     p {
       color: var(--color-primary);

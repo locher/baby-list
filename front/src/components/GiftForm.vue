@@ -28,7 +28,7 @@ const props = defineProps({
 })
 
 // Emits
-const emit = defineEmits(['giftAdded'])
+const emit = defineEmits(['giftAdded', 'giftUpdated'])
 
 // Refs
 const item = reactive(props.itemToUpdate)
@@ -43,8 +43,6 @@ const formattedPrice = computed(() => {
 
 // Methods
 const addItem = async () => {
-  console.log(item)
-
   try {
     const result = await insertItem({
       title: props.itemToUpdate.title,
@@ -70,18 +68,23 @@ const addItem = async () => {
 
 const updateTheItem = async () => {
   try {
-    return await updateItem({
-      title: props.itemToUpdate.title.value,
-      description: props.itemToUpdate.description.value,
-      link: props.itemToUpdate.link.value,
-      id_user: props.itemToUpdate.props.idUser,
-      type: props.itemToUpdate.type.value,
-      id: props.itemToUpdate.id.value,
-      price: formattedPrice
+    const result = await updateItem({
+      title: props.itemToUpdate.title,
+      description: props.itemToUpdate.description,
+      link: props.itemToUpdate.link,
+      id: props.itemToUpdate.id,
+      price: formattedPrice.value,
+        id_user_owner: props.idUser,
+        image: props.itemToUpdate.image
     })
+
+  if(result){
+      emit('giftUpdated', result);
+  }
   } catch (error) {
     console.error(error)
   }
+
 }
 
 const clearForm = () => {
@@ -94,17 +97,11 @@ const clearForm = () => {
 const submitForm = () => {
   let result = null
 
-  console.log(props.itemToUpdate)
-
   // Ajout
   if (!props.itemToUpdate.id) {
-    result = addItem()
+    addItem()
   } else {
-    result = updateTheItem()
-  }
-
-  if (result) {
-    clearForm()
+    updateTheItem()
   }
 }
 
@@ -159,7 +156,7 @@ const fetchImageMeta = async () => {
           <div class="gift--edit__content">
               <input type="text" placeholder="Lien" v-model.trim="props.itemToUpdate.link" @blur="fetchImageMeta"/>
               <div class="gift__header">
-                  <input type="text" placeholder="Désignation" v-model.trim="item.title"/>
+                  <input type="text" placeholder="Désignation" v-model.trim="props.itemToUpdate.title"/>
               </div>
               <textarea placeholder="Description" v-model.trim="props.itemToUpdate.description" rows="3"></textarea>
               <input type="text" placeholder="Prix" v-model.trim="props.itemToUpdate.price" />

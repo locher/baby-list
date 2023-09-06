@@ -18,7 +18,6 @@
     onBeforeMount(async () => {
         user.value = await getUser(1)
         gifts.value = await user.value.getGifts()
-        console.log(gifts.value)
     })
 
     // Method
@@ -33,12 +32,23 @@
     }
 
     const editProfil = () => {
-        isEditFormOpen.value = true
+        openForm.value = true
     }
 
-    const updateGifts = (newGift) => {
-        console.log(newGift)
+    const updateGiftsList = (newGift) => {
         gifts.value.push(newGift);
+        openForm.value = false; // Fermez le formulaire après l'ajout du cadeau si nécessaire
+    }
+
+    const updateGiftsListAfterUpdate = (updatedGift) => {
+        // Changer les infos de la liste des gifts
+        gifts.value.map((item) => {
+            if(item?.id === updatedGift.id){
+                return updatedGift
+            }else{
+                return item
+            }
+        })
         openForm.value = false; // Fermez le formulaire après l'ajout du cadeau si nécessaire
     }
 
@@ -48,17 +58,16 @@
 <template>
     <UserInfos :user="user" :is-admin="true"/>
 
-    <GiftList v-if="gifts.length > 0" :items="gifts" :is-admin="true">   </GiftList>
+    <GiftList v-if="gifts.length > 0" :items="gifts" :is-admin="true" @update-item="(item) => updateItem(item)"/>
 
-    <GiftForm v-if="openForm" :id-user="user.id" :itemToUpdate="itemToUpdate" @gift-added="updateGifts"/>
+    <GiftForm v-if="openForm" :id-user="user.id" :itemToUpdate="itemToUpdate" @gift-added="updateGiftsList" @gift-updated="(item) => updateGiftsListAfterUpdate(item)"/>
 
     <div class="admin__addGift">
         <BtnDefault @click="toggleForm"
                     v-html="openForm ? 'Fermer la fenêtre' : 'Ajouter un cadeau'"/>
     </div>
 
-
-    <UserForm v-if="isEditFormOpen" :user="user"/>
+    <UserForm :user="user"/>
 
 </template>
 

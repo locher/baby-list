@@ -38,7 +38,6 @@ export function insertUser(user) {
       })
 
       const data = await response.json()
-      console.log('User ajouté avec succès :', data)
       resolve(true)
     } catch (error) {
       console.error(ERROR_MESSAGE, error)
@@ -60,7 +59,6 @@ export function updateUser(user) {
       })
 
       const data = await response.json()
-      console.log('User ajouté avec succès :', data)
       resolve(true)
     } catch (error) {
       console.error(ERROR_MESSAGE, error)

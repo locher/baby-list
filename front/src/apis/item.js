@@ -45,7 +45,6 @@ export function insertItem(item) {
       })
 
       const data = await response.json()
-      console.log('Item ajouté avec succès :', data)
       resolve(data)
     } catch (error) {
       console.error(ERROR_MESSAGE, error)
@@ -65,8 +64,8 @@ export function updateItem(item) {
         body: JSON.stringify(item)
       })
 
-      console.log('Item modifié avec succès :', response.json())
-      resolve(true)
+      const data = await response.json()
+      resolve(data)
     } catch (error) {
       console.error(ERROR_MESSAGE, error)
       reject(error)
@@ -86,7 +85,6 @@ export function reserveItem(item, user) {
       })
 
       const data = await response.json()
-      console.log('Item réservé avec succès :', data)
       resolve(data)
     } catch (error) {
       console.error(ERROR_MESSAGE, error)
@@ -106,7 +104,6 @@ export function deleteReservation(item) {
       })
 
       const data = await response.json()
-      console.log('Réservation supprimée :', data)
       resolve(data)
     } catch (error) {
       console.error(ERROR_MESSAGE, error)

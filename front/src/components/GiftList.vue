@@ -46,6 +46,9 @@ const filteredGifts = computed(() => {
     else if(filter.value === 3) return props.items.filter((item) => item.price >= 100)
 })
 
+// Emits
+const emit = defineEmits(['updateItem'])
+
 </script>
 
 <template>
@@ -69,6 +72,7 @@ const filteredGifts = computed(() => {
         :key="`item${item.id}`"
         :item="item"
         :isAdmin="isAdmin"
+        @update-item="(item) => {emit('updateItem', item)}"
       />
 
       <div class="noGift noGift--filter" v-if="filteredGifts.length === 0">Aucun cadeau dans cette tranche de prix !</div>
@@ -148,6 +152,9 @@ const filteredGifts = computed(() => {
   padding: 2em;
   color:var(--color-white);
   border-radius: 1em;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  text-align: center;
 }
 
 </style>

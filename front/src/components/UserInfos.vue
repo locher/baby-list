@@ -9,7 +9,7 @@
 
   const props = defineProps({
       user: {
-          type: object,
+          type: Object,
           required: false,
           default: {}
       },
@@ -50,7 +50,7 @@
         <div v-if="user.description" v-html="formatedDescription" class="description__content"></div>
         <p v-if="user.parents_name" class="description__signature">{{ user.parents_name }}</p>
     </div>
-    
+
 </template>
 
 <style lang="scss">

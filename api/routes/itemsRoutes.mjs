@@ -106,7 +106,7 @@ itemsRoutes.post('/items', (req, res) => {
 // Update item
 itemsRoutes.put('/items/:id', (req, res) => {
     const itemId = req.params.id;
-    const { title, description, link, type } = req.body;
+    const { title, description, link, price, image, id } = req.body;
     const date_modification = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     const updatedGift = {
@@ -114,7 +114,9 @@ itemsRoutes.put('/items/:id', (req, res) => {
         description: description,
         link: link,
         date_modification: date_modification,
-        type: type
+        price: price,
+        image: image,
+        id: id
     };
 
     connection.query('UPDATE items SET ? WHERE id = ?', [updatedGift, itemId], (err, result) => {
