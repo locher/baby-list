@@ -25,6 +25,7 @@ const props = defineProps({
   gap: .3rem;
 
   svg{
+    transition: all ease .3s;
     fill: var(--color-primary);
 
     &:not(.active){
