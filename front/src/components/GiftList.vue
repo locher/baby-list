@@ -71,15 +71,15 @@ const filteredGifts = computed(() => {
         :isAdmin="isAdmin"
       />
 
-      <div class="noGift noGift--filter" v-if="filteredGifts.length === 0">Aucun cadeau dans cette tranche de prix :(</div>
+      <div class="noGift noGift--filter" v-if="filteredGifts.length === 0">Aucun cadeau dans cette tranche de prix !</div>
 
-      <div class="noGift" v-if="props.items.length === 0">Aucun cadeau pour le moment :(</div>
+      <div class="noGift" v-if="props.items.length === 0">Pas encore de cadeau ! Revenez plus tard :)</div>
 
     </div>
   </section>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 
 .gifts{
   margin-top: 4rem;
@@ -89,6 +89,10 @@ const filteredGifts = computed(() => {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: var(--gap);
+
+    @media (width >= 1000px){
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 
@@ -135,8 +139,15 @@ const filteredGifts = computed(() => {
   }
 }
 
-.priceRange{
-  width: 7rem;
+.priceRange > svg{
+    width: 2rem;
+}
+
+.noGift{
+  background-color: var(--color-primary);
+  padding: 2em;
+  color:var(--color-white);
+  border-radius: 1em;
 }
 
 </style>

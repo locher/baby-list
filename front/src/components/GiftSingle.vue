@@ -105,7 +105,6 @@ const priceRange = computed(() => {
     </div>
 
     <div class="gift__right">
-        <div class="gift__right__content">
             <div class="gift__content">
                 <h3 class="gift__title">{{ props.item.title }}</h3>
                 <p v-if="props.item.description" class="gift__description">{{ props.item.description }}</p>
@@ -129,7 +128,6 @@ const priceRange = computed(() => {
                 >
                 <PriceRange :range="priceRange" v-if="props.item.price > 0"/>
             </div>
-        </div>
     </div>
 
     <!-- Réservé -->
@@ -253,16 +251,6 @@ const priceRange = computed(() => {
       left: 50%;
       transform: translateX(-50%);
     }
-  }
-}
-
-.gift__right{
-  display: flex;
-
-  &__content{
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 100%;
   }
 }
 </style>

@@ -27,6 +27,7 @@ const props = defineProps({
   svg{
     transition: all ease .3s;
     fill: var(--color-primary);
+    height: 100%;
 
     &:not(.active){
       opacity: .5;
