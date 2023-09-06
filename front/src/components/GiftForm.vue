@@ -1,7 +1,11 @@
 <script setup>
+
 import { insertItem, updateItem } from '@/apis/item'
-import {computed, reactive} from 'vue'
+import {computed, reactive, ref} from 'vue'
 import BtnDefault from "@/components/BtnDefault.vue";
+import {OPENGRAPH_TOKEN} from "@/config/constants.js";
+import IconNoPicture from "@/components/icons/IconNoPicture.vue";
+import IconSpinner from "@/components/icons/IconSpinner.vue";
 
 // Props
 const props = defineProps({
@@ -17,7 +21,8 @@ const props = defineProps({
       description: '',
       link: '',
       id: '',
-      price:''
+      price:'',
+      image:''
     }
   }
 })
@@ -27,6 +32,7 @@ const emit = defineEmits(['giftAdded'])
 
 // Refs
 const item = reactive(props.itemToUpdate)
+const isLoading = ref(false)
 
 // Computed
 
@@ -45,7 +51,8 @@ const addItem = async () => {
       description: props.itemToUpdate.description,
       link: props.itemToUpdate.link,
       id_user_owner: props.idUser,
-      price: formattedPrice.value
+      price: formattedPrice.value,
+        image: props.itemToUpdate.image
     })
 
     //Emit the new gift
@@ -100,6 +107,39 @@ const submitForm = () => {
     clearForm()
   }
 }
+
+const fetchImageMeta = async () => {
+
+
+    const regexURL = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
+
+    // si l'url est pas vide et que c'est bien une url, on récupère les meta
+    if(props.itemToUpdate.link && regexURL.test(props.itemToUpdate.link)){
+        try {
+            isLoading.value=true
+            const encodedUrl=encodeURIComponent(props.itemToUpdate.link)
+
+            const response = await fetch(`https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}`);
+
+            const data = await response.json();
+
+            // Récupère le titre
+            if(!props.itemToUpdate.title){ props.itemToUpdate.title = data?.openGraph?.title }
+
+            // Récupère l'image
+            props.itemToUpdate.image = data?.openGraph?.image?.url || ''
+
+            // Récupère le prix
+            if(!props.itemToUpdate.price){ props.itemToUpdate.price = data?.hybridGraph?.products[0]?.offers[0]?.price || '' }
+
+            isLoading.value=false
+        } catch (error) {
+            console.error('Une erreur s\'est produite lors de la récupération des données.', error);
+            isLoading.value=false
+        }
+    }
+}
+
 </script>
 
 <template>
@@ -107,24 +147,55 @@ const submitForm = () => {
 
 
   <form class="gift gift--edit">
-      <div class="gift__header">
-          <input type="text" placeholder="Désignation" v-model.trim="item.title" />
+
+      <div class="gift__left">
+          <div class="gift__image">
+              <img :src="props.itemToUpdate.image" alt="" v-if="props.itemToUpdate.image">
+              <IconNoPicture v-else />
+          </div>
       </div>
 
-      <input type="text" placeholder="Lien" v-model.trim="props.itemToUpdate.link" />
-      <textarea placeholder="Description" v-model.trim="props.itemToUpdate.description" rows="3"></textarea>
-      <input type="text" placeholder="Prix" v-model.trim="props.itemToUpdate.price" />
+      <div class="gift__right">
+          <div class="gift--edit__content">
+              <input type="text" placeholder="Lien" v-model.trim="props.itemToUpdate.link" @blur="fetchImageMeta"/>
+              <div class="gift__header">
+                  <input type="text" placeholder="Désignation" v-model.trim="item.title"/>
+              </div>
+              <textarea placeholder="Description" v-model.trim="props.itemToUpdate.description" rows="3"></textarea>
+              <input type="text" placeholder="Prix" v-model.trim="props.itemToUpdate.price" />
 
-      <div class="gift__buttons">
-          <BtnDefault v-if="props.itemToUpdate.id" @click.prevent="submitForm">Modifier le cadeau</BtnDefault>
-          <BtnDefault v-else @click.prevent="submitForm">Ajouter à la liste</BtnDefault>
+              <div class="gift__buttons">
+                  <BtnDefault v-if="props.itemToUpdate.id" @click.prevent="submitForm" :border="true">Modifier le cadeau</BtnDefault>
+                  <BtnDefault v-else @click.prevent="submitForm" :border="true">Ajouter à la liste</BtnDefault>
+              </div>
+          </div>
       </div>
+
+      <div class="disabled" v-if="isLoading">
+          <IconSpinner/>
+      </div>
+
   </form>
     </div>
 </template>
 
-<style scoped lang="scss">
-  .gift{
+<style lang="scss">
+  .gift--edit{
+      margin-top: var(--gap);
+      position: relative;
+
+      &__form{
+          display: grid;
+          grid-template-columns: 2fr 5fr;
+          gap: 1rem;
+          margin-bottom: var(--gap);
+      }
+
+      &__content{
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1rem;
+      }
 
     input[type="text"],
     input[type="number"],
@@ -144,22 +215,35 @@ const submitForm = () => {
       }
     }
 
-      &__buttons{
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .disabled{
+          position: absolute;
+          top: 0;
+          left:0;
+          height: 100%;
+          width: 100%;
+          background-color: rgba(var(--color-primary-rgb), .2);
+          border-radius: .5em;
+          backdrop-filter: blur(.2rem);
+
+          .icon-spinner{
+              position: absolute;
+              width: 40px;
+              left: 50%;
+              top: 50%;
+              transform: translateX(-50%) translateY(-50%);
+
+              svg{
+                  fill: var(--color-primary);
+              }
+          }
       }
 
-    &--edit{
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-      margin-top: var(--gap);
-    }
-
-    &__header{
-      font-size: 1.7rem;
-      line-height: 1.2em;
-    }
+      .gift__image{
+          svg{
+              transform: none;
+          }
+      }
   }
+
+
 </style>

@@ -33,6 +33,7 @@ export async function deleteItem(itemID) {
 }
 
 export function insertItem(item) {
+
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(BASE_API + `/items`, {

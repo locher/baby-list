@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 import { deleteItem, deleteReservation, insertItem, reserveItem } from '@/apis/item'
 import GiftReservationForm from "@/components/GiftReservationForm.vue";
 import PriceRange from "@/components/PriceRange.vue";
+import IconNoPicture from "@/components/icons/IconNoPicture.vue";
 
 // Emits
 const emit = defineEmits(['updateItem'])
@@ -87,50 +88,53 @@ const priceRange = computed(() => {
 
 <template>
   <div :class="`gift ${isDeleted ? 'deleted' : ''} ${props.item.isReserved ? 'reserved' : ''}`">
-    <div class="gift__header">
-      <h3>{{ props.item.title }}</h3>
-      <BtnDefault
-        v-if="props.item.link && !isDeleted"
-        type="a"
-        :href="props.item.link"
-        target="_blank"
-        size="tiny"
-        :border="true"
-        >Voir</BtnDefault
-      >
+
+    <div class="gift__left">
+        <div class="gift__image">
+            <img :src="props.item.image" alt="" v-if="props.item.image">
+            <IconNoPicture v-else />
+            <BtnDefault
+                    v-if="props.item.link && !isDeleted"
+                    type="a"
+                    :href="props.item.link"
+                    target="_blank"
+                    size="tiny"
+            >Voir</BtnDefault
+            >
+        </div>
     </div>
 
-    <div v-if="props.item.description" class="gift__description">
-      <p>{{ props.item.description }}</p>
+    <div class="gift__right">
+        <div class="gift__right__content">
+            <div class="gift__content">
+                <h3 class="gift__title">{{ props.item.title }}</h3>
+                <p v-if="props.item.description" class="gift__description">{{ props.item.description }}</p>
+            </div>
+
+            <div v-if="props.isAdmin && !isDeleted" class="gift__edit">
+                <BtnDefault color="red" size="tiny" :border="true" @click="deleteTheGift"
+                >Supprimer</BtnDefault
+                >
+                <BtnDefault size="tiny" :border="true" @click="emit('updateItem', props.item)"
+                >Modifier</BtnDefault
+                >
+            </div>
+
+            <div v-if="!props.isAdmin && !isDeleted" class="gift__edit">
+                <BtnDefault
+                        v-if="!props.item.isReserved"
+                        @click="reserveTheItem"
+                        :border="true"
+                >Réserver</BtnDefault
+                >
+                <PriceRange :range="priceRange" v-if="props.item.price > 0"/>
+            </div>
+        </div>
     </div>
-
-
-    <div v-if="props.isAdmin && !isDeleted" class="gift__edit">
-      <BtnDefault color="red" size="tiny" :border="true" @click="deleteTheGift"
-        >Supprimer</BtnDefault
-      >
-      <BtnDefault size="tiny" :border="true" @click="emit('updateItem', props.item)"
-        >Modifier</BtnDefault
-      >
-
-        <PriceRange :range="priceRange" v-if="props.item.price > 0"/>
-    </div>
-
-
 
     <!-- Réservé -->
     <div v-if="!props.isAdmin && !isDeleted && props.item.isReserved">
       <p>Réservé par {{ reservationName }}</p>
-    </div>
-
-    <div v-if="!props.isAdmin && !isDeleted" class="gift__edit">
-      <BtnDefault
-        v-if="!props.item.isReserved"
-        @click="reserveTheItem"
-        size="tiny"
-        >Réserver</BtnDefault
-      >
-        <PriceRange :range="priceRange" v-if="props.item.price > 0"/>
     </div>
 
     <div v-if="isDeleted" class="gift__deleted-message">
@@ -147,20 +151,21 @@ const priceRange = computed(() => {
 
 <style lang="scss">
 .gift {
-  --bg-color: rgba(var(--color-primary-rgb), .15);
+  --bg-color: rgba(var(--color-primary-rgb), .1);
   --text-color: var(--color-primary);
+  --border-color: transparent;
 
   transition: all ease-in-out 0.2s;
-  padding: calc(var(--padding-global) / 2.6);
+  padding: var(--gap);
   background-color: var(--bg-color);
   border-radius: 10px;
-  border: 2px solid var(--bg-color);
+  border: 2px solid var(--border-color);
   color: var(--text-color);
   flex-shrink: 0;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 14rem auto;
+  gap: var(--gap);
 
   &.deleted {
     --bg-color: var(--color-disabled-bg);
@@ -176,37 +181,25 @@ const priceRange = computed(() => {
     }
   }
 
-  &__header {
+  &__content{
     display: flex;
-    align-items: center;
-
-    h3 {
-      font-size: 1.7rem;
-      line-height: 1.2em;
-      flex-grow: 1;
-    }
-
-    .bt {
-      margin-left: 15px;
-      flex-shrink: 0;
-      align-self: flex-start;
-    }
-  }
-
-  &__description {
-    font-size: 1.3rem;
-    line-height: 1.2em;
-    margin-top: 0.5rem;
+    justify-content: center;
+    flex-direction: column;
   }
 
   &__edit {
-    margin-top: 2rem;
     color: var(--color-white);
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    margin-top: 1rem;
 
     form {
       margin-right: 0.8rem;
+    }
+
+    .priceRange{
+      flex-grow: 1;
+      justify-content: right;
     }
   }
 
@@ -219,6 +212,57 @@ const priceRange = computed(() => {
       color: var(--color-primary);
       flex: 1;
     }
+  }
+
+  &__title{
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  &__description{
+    font-weight: 300;
+    line-height: 1.4em;
+    margin-top: .3em;
+  }
+
+  &__image{
+    width: 100%;
+    aspect-ratio: 1;
+    position: relative;
+    background-color: var(--bg-color);
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+
+    img{
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+
+    }
+
+    svg{
+      margin: auto;
+      width: 6rem;
+      height: 3rem;
+    }
+
+    a{
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.gift__right{
+  display: flex;
+
+  &__content{
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 100%;
   }
 }
 </style>

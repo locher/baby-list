@@ -56,11 +56,11 @@ const btnClasses = computed(() => {
 .bt {
   transition: all ease 0.3s;
   border-radius: 2em;
-  padding: 1em 2.5em;
+  padding: 1em 2.3em;
   text-decoration: none;
   display: inline-flex;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   text-align: center;
   line-height: 1em;
   cursor: pointer;

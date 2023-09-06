@@ -79,6 +79,7 @@ const filteredGifts = computed(() => {
 
 .gifts{
   margin-top: 4rem;
+  margin-bottom: var(--gap);
 
   &__filter{
     margin-bottom: 4rem;

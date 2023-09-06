@@ -77,7 +77,7 @@ itemsRoutes.delete('/items/:id', (req, res) => {
 
 // Add Gift
 itemsRoutes.post('/items', (req, res) => {
-    const { id, title, description, link, id_user_owner, price } = req.body;
+    const { id, title, description, link, id_user_owner, price, image } = req.body;
     const date_creation = new Date().toISOString().slice(0, 19).replace('T', ' ')
     const gift = {
         id: id,
@@ -86,6 +86,7 @@ itemsRoutes.post('/items', (req, res) => {
         link: link,
         id_user_owner: id_user_owner,
         price: price,
+        image: image,
         date_creation: date_creation,
         date_modification: null
     };

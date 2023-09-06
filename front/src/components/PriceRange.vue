@@ -23,8 +23,6 @@ const props = defineProps({
   display: flex;
   align-items: center;
   gap: .3rem;
-  justify-content: flex-end;
-  flex:1;
 
   svg{
     fill: var(--color-primary);
