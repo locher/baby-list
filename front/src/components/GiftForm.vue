@@ -6,6 +6,7 @@ import BtnDefault from "@/components/BtnDefault.vue";
 import {OPENGRAPH_TOKEN} from "@/config/constants.js";
 import IconNoPicture from "@/components/icons/IconNoPicture.vue";
 import IconSpinner from "@/components/icons/IconSpinner.vue";
+import ModalItem from "@/components/ModalItem.vue";
 
 // Props
 const props = defineProps({
@@ -33,6 +34,8 @@ const emit = defineEmits(['giftAdded', 'giftUpdated'])
 // Refs
 const item = reactive(props.itemToUpdate)
 const isLoading = ref(false)
+const allImages = ref([])
+const isModalImagesOpen = ref(false)
 
 // Computed
 
@@ -107,8 +110,7 @@ const submitForm = () => {
 
 const fetchImageMeta = async () => {
 
-
-    const regexURL = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
+    const regexURL = /^(https?):\/\/[^\s/$.?#].[^\s]*$/i
 
     // si l'url est pas vide et que c'est bien une url, on récupère les meta
     if(props.itemToUpdate.link && regexURL.test(props.itemToUpdate.link)){
@@ -120,11 +122,15 @@ const fetchImageMeta = async () => {
 
             const data = await response.json();
 
+            console.log(data)
+
             // Récupère le titre
-            if(!props.itemToUpdate.title){ props.itemToUpdate.title = data?.openGraph?.title }
+            const title = data?.openGraph?.title || data.hybridGraph?.title || ''
+            if(!props.itemToUpdate.title){ props.itemToUpdate.title = title }
 
             // Récupère l'image
-            props.itemToUpdate.image = data?.openGraph?.image?.url || ''
+            const image = data?.openGraph?.image?.url || data.hybridGraph?.image || ''
+            props.itemToUpdate.image = image
 
             // Récupère le prix
             if(!props.itemToUpdate.price){ props.itemToUpdate.price = data?.hybridGraph?.products[0]?.offers[0]?.price || '' }
@@ -137,10 +143,43 @@ const fetchImageMeta = async () => {
     }
 }
 
+const loadAllImages = async () => {
+    try {
+        isLoading.value=true
+        const encodedUrl=encodeURIComponent(props.itemToUpdate.link)
+
+        const response = await fetch(`https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}`);
+
+        const data = await response.json();
+
+        allImages.value = data?.htmlInferred?.images;
+
+        if(allImages.value.length > 0){
+            isModalImagesOpen.value = true
+        }
+
+        isLoading.value=false
+    } catch (error) {
+        console.error('Une erreur s\'est produite lors de la récupération des données.', error);
+        isLoading.value=false
+    }
+}
+
+const changeImage = (image) => {
+    props.itemToUpdate.image = image
+    isModalImagesOpen.value = false
+}
+
 </script>
 
 <template>
     <div class="wrapper">
+
+        <ModalItem v-if="isModalImagesOpen" :is-open="isModalImagesOpen">
+            <div class="modal__imgChoice">
+                <img v-for="image in allImages" :src="image" alt="" @click="changeImage(image)">
+            </div>
+        </ModalItem>
 
 
   <form class="gift gift--edit">
@@ -150,6 +189,7 @@ const fetchImageMeta = async () => {
               <img :src="props.itemToUpdate.image" alt="" v-if="props.itemToUpdate.image">
               <IconNoPicture v-else />
           </div>
+          <BtnDefault :border="true" size="tiny" @click.prevent="loadAllImages">Modifier l'image</BtnDefault>
       </div>
 
       <div class="gift__right">
@@ -192,6 +232,14 @@ const fetchImageMeta = async () => {
           display: grid;
           grid-template-columns: 1fr;
           gap: 1rem;
+      }
+
+      .gift__left{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+          text-align: center;
       }
 
     input[type="text"],
@@ -239,6 +287,20 @@ const fetchImageMeta = async () => {
           svg{
               transform: none;
           }
+      }
+  }
+
+  .modal__imgChoice{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--gap);
+
+      img{
+          width: 100%;
+          aspect-ratio: 1;
+          height: 100%;
+          object-fit: cover;
+          cursor: pointer;
       }
   }
 
