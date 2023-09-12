@@ -48,7 +48,6 @@
 
     <div class="description wrapper">
         <div v-if="user.description" v-html="formatedDescription" class="description__content"></div>
-        <p v-if="user.parents_name" class="description__signature">{{ user.parents_name }}</p>
     </div>
 
 </template>
@@ -111,11 +110,6 @@
             p + p{
                 margin-top: .8em;
             }
-        }
-
-        &__signature{
-            font-weight: bold;
-            margin-top: 1em;
         }
     }
 </style>

@@ -53,7 +53,7 @@ const addItem = async () => {
       link: props.itemToUpdate.link,
       id_user_owner: props.idUser,
       price: formattedPrice.value,
-        image: props.itemToUpdate.image
+      image: props.itemToUpdate.image
     })
 
     //Emit the new gift

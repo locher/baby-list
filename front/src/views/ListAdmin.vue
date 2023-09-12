@@ -67,8 +67,6 @@
                     v-html="openForm ? 'Fermer la fenêtre' : 'Ajouter un cadeau'"/>
     </div>
 
-    <UserForm :user="user"/>
-
 </template>
 
 
