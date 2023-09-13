@@ -11,8 +11,12 @@
 
   const showModal = ref(props.isOpen);
 
+  // Emits
+  const emit = defineEmits(['closeModal'])
+
   const closeModal = () => {
     showModal.value = false;
+    emit('closeModal')
   };
 </script>
 

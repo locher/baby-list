@@ -141,7 +141,7 @@ itemsRoutes.put('/items/:id', (req, res) => {
 itemsRoutes.post('/items/:item/reserve', (req, res) => {
     const itemID = req.params.item;
     const date_reservation = new Date().toISOString().slice(0, 19).replace('T', ' ')
-    const {email, userName, itemTitle} = req.body;
+    const {email, user, itemTitle} = req.body;
 
     // UUID Creation for email
     const external_id = crypto.randomUUID()
@@ -149,7 +149,7 @@ itemsRoutes.post('/items/:item/reserve', (req, res) => {
     const reservation = {
         id: null,
         id_gift: itemID,
-        reservation_name: userName,
+        reservation_name: user,
         date_reservation: date_reservation,
         external_id: external_id,
         email: email,
@@ -180,7 +180,7 @@ itemsRoutes.post('/items/:item/reserve', (req, res) => {
                         ],
                         TemplateID: 5090038,
                         TemplateLanguage: true,
-                        Subject: `Réservation du cadeau de naissance ${reservation.itemTitle}`,
+                        Subject: `🐥 Cadeau de naissance ${reservation.itemTitle}`,
                         Variables: {
                             giftTitle: reservation.itemTitle,
                             cancelReservationUrl: `${process.env.APP_PUBLIC_URL}/delete-reservation/${reservation.external_id}`

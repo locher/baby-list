@@ -49,6 +49,17 @@ const filteredGifts = computed(() => {
 // Emits
 const emit = defineEmits(['updateItem'])
 
+// Methods
+
+const updateItem = (item) => {
+    emit('updateItem', item)
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        left: 0,
+        behavior: "smooth"
+    })
+}
+
 </script>
 
 <template>
@@ -72,7 +83,7 @@ const emit = defineEmits(['updateItem'])
         :key="`item${item.id}`"
         :item="item"
         :isAdmin="isAdmin"
-        @update-item="(item) => {emit('updateItem', item)}"
+        @update-item="(item) => updateItem(item)"
       />
 
       <div class="noGift noGift--filter" v-if="filteredGifts.length === 0">Aucun cadeau dans cette tranche de prix !</div>

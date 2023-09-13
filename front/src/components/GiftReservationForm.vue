@@ -15,29 +15,36 @@
   const name = ref()
   const email = ref()
 
+  // Emits
+  const emit = defineEmits(['reservationDone'])
+
   // Methods
   const submitReserveItem = async () => {
       if(name.value !== '' && email.value !== ''){
-          await reserveItem(props.item?.id, name.value, email.value, props.item?.title)
+          const reserve = await reserveItem(props.item?.id, name.value, email.value, props.item?.title)
+
+          if(reserve){
+              emit('reservationDone', reserve)
+          }
       }
   }
 
 </script>
 
 <template>
-    <form>
+    <form @submit.prevent="submitReserveItem">
         <div class="form__single">
             <label for="" class="form__label">Ton nom ?</label>
-            <input type="text" class="form__input" v-model.trim="name">
+            <input type="text" class="form__input" v-model.trim="name" required>
         </div>
 
         <div class="form__single">
             <label for="" class="form__label">Ton mail ?</label>
-            <input type="email" class="form__input" v-model.trim="email">
+            <input type="email" class="form__input" v-model.trim="email" required>
             <span class="form__notice">Pour valider ou annuler la réservation</span>
         </div>
 
-        <BtnDefault @click.prevent="submitReserveItem">Réserver</BtnDefault>
+        <BtnDefault>Réserver</BtnDefault>
     </form>
 </template>
 

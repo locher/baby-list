@@ -1,7 +1,7 @@
 <script setup>
 import BtnDefault from '@/components/BtnDefault.vue'
 import { computed, ref } from 'vue'
-import { deleteItem, deleteReservation, insertItem, reserveItem } from '@/apis/item'
+import { deleteItem, insertItem } from '@/apis/item'
 import GiftReservationForm from "@/components/GiftReservationForm.vue";
 import PriceRange from "@/components/PriceRange.vue";
 import IconNoPicture from "@/components/icons/IconNoPicture.vue";
@@ -47,7 +47,11 @@ const restoreItem = async () => {
 
 const reserveTheItem = async () => {
     isReserveForm.value = true
-  console.log('reserve item')
+}
+
+const reservationDone = (args) => {
+    isReserveForm.value = false
+    props.item.reservation_name = args.reservation_name
 }
 
 // Computed
@@ -81,7 +85,7 @@ const priceRange = computed(() => {
     <div class="gift__right">
             <div class="gift__content">
                 <h3 class="gift__title">{{ props.item.title }}</h3>
-                <p v-if="props.item.description" class="gift__description">{{ props.item.description }}</p>
+                <p v-if="props.item.description && !props.item.isReserved" class="gift__description">{{ props.item.description }}</p>
             </div>
 
             <div v-if="props.isAdmin && !isDeleted" class="gift__edit">
@@ -100,13 +104,13 @@ const priceRange = computed(() => {
                         :border="true"
                 >Réserver</BtnDefault
                 >
-                <PriceRange :range="priceRange" v-if="props.item.price > 0"/>
+                <PriceRange :range="priceRange" v-if="props.item.price > 0 && !props.item.isReserved"/>
             </div>
-    </div>
 
-    <!-- Réservé -->
-    <div v-if="!props.isAdmin && !isDeleted && props.item.isReserved">
-      <p>Réservé par personne</p>
+          <!-- Réservé -->
+          <div v-if="!isDeleted && props.item.isReserved">
+              <p class="reserved__message">Réservé par {{ item?.reservation_name }}</p>
+          </div>
     </div>
 
     <div v-if="isDeleted" class="gift__deleted-message">
@@ -117,9 +121,9 @@ const priceRange = computed(() => {
     </div>
   </div>
 
-    <ModalItem :isOpen="isReserveForm" v-if="isReserveForm" class="gift__modalResa">
+    <ModalItem :isOpen="isReserveForm" v-if="isReserveForm" class="gift__modalResa" @close-modal="isReserveForm = false">
         <h2 class="gift__modalResa__title">Réserver <span>{{ props.item.title }}</span></h2>
-        <GiftReservationForm class="gift__modalResa__form" :item="item"/>
+        <GiftReservationForm class="gift__modalResa__form" :item="item" @reservation-done="(args) => reservationDone(args)"/>
         <GiftSingle :item="props?.item" :isPreview="true" class="gift__modalResa__gift"/>
     </ModalItem>
 
@@ -144,6 +148,10 @@ const priceRange = computed(() => {
   grid-template-columns: 14rem auto;
   gap: var(--gap);
 
+  &--edit{
+    border: 2px solid var(--color-primary);
+  }
+
   &.deleted {
     > :not(.gift__deleted-message){
       filter: grayscale(1);
@@ -155,10 +163,21 @@ const priceRange = computed(() => {
   &.reserved {
     background-color: transparent;
     color: var(--color-primary);
+    border: 2px solid var(--color-primary);
 
-    .border-pink-bt {
-      color: var(--color-primary) !important;
+
+    .gift__title, .gift__left{
+      opacity: .4;
     }
+  }
+
+  .reserved__message{
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    display: inline-flex;
+    padding: .2em .4em;
+    margin-top: 1rem;
+
   }
 
   &__content{

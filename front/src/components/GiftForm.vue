@@ -182,7 +182,7 @@ const changeImage = (image) => {
         </ModalItem>
 
 
-  <form class="gift gift--edit">
+  <form class="gift gift--edit" @submit.prevent="submitForm">
 
       <div class="gift__left">
           <div class="gift__image">
@@ -202,8 +202,8 @@ const changeImage = (image) => {
               <input type="text" placeholder="Prix" v-model.trim="props.itemToUpdate.price" />
 
               <div class="gift__buttons">
-                  <BtnDefault v-if="props.itemToUpdate.id" @click.prevent="submitForm" :border="true">Modifier le cadeau</BtnDefault>
-                  <BtnDefault v-else @click.prevent="submitForm" :border="true">Ajouter à la liste</BtnDefault>
+                  <BtnDefault v-if="props.itemToUpdate.id" :border="true">Modifier le cadeau</BtnDefault>
+                  <BtnDefault v-else :border="true">Ajouter à la liste</BtnDefault>
               </div>
           </div>
       </div>
