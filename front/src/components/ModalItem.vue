@@ -54,9 +54,9 @@
       left: 50%;
       transform: translate3d(-50%, -50%, 0);
       width: clamp(30rem, calc(30rem + 30vw), 100rem);
-      height: clamp(30rem, calc(30rem + 20vh), 80vh);
+      height: clamp(30rem, calc(30rem + 50vh), 90vh);
       max-width: 90%;
-      border-radius: 0.5rem;
+      border-radius: 1rem;
       overflow-y: scroll;
       box-shadow: 0 0 40rem var(--color-primary);
     }

@@ -1,5 +1,9 @@
 import express from 'express';
-import { connection } from "../connection.mjs";
+import * as crypto from "crypto";
+
+import Client from 'node-mailjet';
+
+import {connection} from "../connection.mjs";
 
 export const itemsRoutes = express.Router();
 
@@ -77,7 +81,7 @@ itemsRoutes.delete('/items/:id', (req, res) => {
 
 // Add Gift
 itemsRoutes.post('/items', (req, res) => {
-    const { id, title, description, link, id_user_owner, price, image } = req.body;
+    const {id, title, description, link, id_user_owner, price, image} = req.body;
     const date_creation = new Date().toISOString().slice(0, 19).replace('T', ' ')
     const gift = {
         id: id,
@@ -106,7 +110,7 @@ itemsRoutes.post('/items', (req, res) => {
 // Update item
 itemsRoutes.put('/items/:id', (req, res) => {
     const itemId = req.params.id;
-    const { title, description, link, price, image, id } = req.body;
+    const {title, description, link, price, image, id} = req.body;
     const date_modification = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     const updatedGift = {
@@ -134,38 +138,87 @@ itemsRoutes.put('/items/:id', (req, res) => {
 });
 
 // Reserve item
-itemsRoutes.post('/items/:item/reserve/:user', (req, res) => {
+itemsRoutes.post('/items/:item/reserve', (req, res) => {
     const itemID = req.params.item;
-    const userID = req.params.user;
     const date_reservation = new Date().toISOString().slice(0, 19).replace('T', ' ')
-    const reservationId = req.body.reservation_id
+    const {email, userName, itemTitle} = req.body;
 
-    console.log(req.body)
+    // UUID Creation for email
+    const external_id = crypto.randomUUID()
 
     const reservation = {
-        id: reservationId,
+        id: null,
         id_gift: itemID,
-        id_user_reservation: userID,
-        date_reservation: date_reservation
+        reservation_name: userName,
+        date_reservation: date_reservation,
+        external_id: external_id,
+        email: email,
+        itemTitle: itemTitle
     }
 
-    connection.query('INSERT INTO reservations SET ?', reservation, (err, result) => {
+    const sendEmail = async (reservation) => {
+
+        const mailjet = new Client({
+            apiKey: process.env.MJ_APIKEY_PUBLIC,
+            apiSecret: process.env.MJ_APIKEY_PRIVATE
+        });
+
+        await (async () => {
+
+            const emailData = {
+                Messages: [
+                    {
+                        From: {
+                            Email: "shop@herrloc.fr",
+                            Name: "Les Moslherr"
+                        },
+                        To: [
+                            {
+                                Email: reservation.email,
+                                Name: reservation.reservation_name
+                            }
+                        ],
+                        TemplateID: 5090038,
+                        TemplateLanguage: true,
+                        Subject: `Réservation du cadeau de naissance ${reservation.itemTitle}`,
+                        Variables: {
+                            giftTitle: reservation.itemTitle,
+                            cancelReservationUrl: `${process.env.APP_PUBLIC_URL}/delete-reservation/${reservation.external_id}`
+                        }
+                    }
+                ]
+            };
+
+            try {
+                const sendResult = await mailjet.post("send", { version: "v3.1" }).request(emailData);
+                console.log(sendResult.body);
+            } catch (err) {
+                console.error(err.statusCode);
+                throw err; // Vous pouvez gérer l'erreur en renvoyant une réponse d'erreur appropriée ici
+            }
+
+        })();
+
+
+    };
+
+    connection.query('INSERT INTO reservations SET id = ?, id_gift = ?, date_reservation = ?, reservation_name = ?, external_id = ?', [reservation.id,  reservation.id_gift, reservation.date_reservation, reservation.reservation_name, reservation.external_id], async (err, result) => {
         if (err) {
             console.error('Error adding reservation:', err);
-            res.status(500).send('Error adding gift');
+            res.status(500).send('Error adding reservation');
         } else {
             reservation.id = result.insertId;
+            await sendEmail(reservation);
             res.json(reservation);
         }
     });
 });
 
 
-
 // Delete reservation
 itemsRoutes.delete('/reservation/:id', (req, res) => {
     const id = req.params.id
-    connection.query('DELETE FROM reservations WHERE reservations.id = ?', id, (err, results) => {
+    connection.query('DELETE FROM reservations WHERE reservations.external_id = ?', id, (err, results) => {
         if (err) {
             console.error('Error deleting reservation:', err);
         } else {

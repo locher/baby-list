@@ -5,6 +5,7 @@ import { deleteItem, deleteReservation, insertItem, reserveItem } from '@/apis/i
 import GiftReservationForm from "@/components/GiftReservationForm.vue";
 import PriceRange from "@/components/PriceRange.vue";
 import IconNoPicture from "@/components/icons/IconNoPicture.vue";
+import ModalItem from "@/components/ModalItem.vue";
 
 // Emits
 const emit = defineEmits(['updateItem'])
@@ -18,11 +19,16 @@ const props = defineProps({
   isAdmin: {
     type: Boolean,
     default: false
+  },
+  isPreview: {
+    type: Boolean,
+    default: false
   }
 })
 
 // Refs
 const isDeleted = ref(false)
+const isReserveForm = ref(false)
 
 // Methods
 const deleteTheGift = async () => {
@@ -40,6 +46,7 @@ const restoreItem = async () => {
 }
 
 const reserveTheItem = async () => {
+    isReserveForm.value = true
   console.log('reserve item')
 }
 
@@ -86,7 +93,7 @@ const priceRange = computed(() => {
                 >
             </div>
 
-            <div v-if="!props.isAdmin && !isDeleted" class="gift__edit">
+            <div v-if="!props.isAdmin && !isDeleted && !isPreview" class="gift__edit">
                 <BtnDefault
                         v-if="!props.item.isReserved"
                         @click="reserveTheItem"
@@ -110,7 +117,12 @@ const priceRange = computed(() => {
     </div>
   </div>
 
-  <GiftReservationForm style="display: none"/>
+    <ModalItem :isOpen="isReserveForm" v-if="isReserveForm" class="gift__modalResa">
+        <h2 class="gift__modalResa__title">Réserver <span>{{ props.item.title }}</span></h2>
+        <GiftReservationForm class="gift__modalResa__form" :item="item"/>
+        <GiftSingle :item="props?.item" :isPreview="true" class="gift__modalResa__gift"/>
+    </ModalItem>
+
 
 </template>
 
@@ -225,4 +237,23 @@ const priceRange = computed(() => {
     }
   }
 }
+
+.gift__modalResa{
+  &__title{
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    line-height: 1em;
+
+    span{
+      font-weight: 300;
+      font-size: .8em;
+    }
+  }
+
+  &__form{
+    margin-bottom: 3rem;
+  }
+}
+
 </style>

@@ -14,6 +14,11 @@ const router = createRouter({
       component: () => import('../views/ListAdmin.vue')
     },
     {
+      path: '/delete-reservation/:uuid',
+      name: 'delete-reservation',
+      component: () => import('../views/DeleteReservation.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       redirect: '/'
     }

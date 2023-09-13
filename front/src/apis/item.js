@@ -73,15 +73,18 @@ export function updateItem(item) {
   })
 }
 
-export function reserveItem(item, user) {
+export function reserveItem(itemId, user, email, itemTitle) {
+
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(BASE_API + `/items/${item.id}/reserve/${user.id}`, {
+      const response = await fetch(BASE_API + `/items/${itemId}/reserve`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(item)
+        body: JSON.stringify({
+          email, user, itemTitle
+        })
       })
 
       const data = await response.json()
@@ -93,10 +96,10 @@ export function reserveItem(item, user) {
   })
 }
 
-export function deleteReservation(item) {
+export function deleteReservation(uuid) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(BASE_API + `/reservation/${item.reservation_id}`, {
+      const response = await fetch(BASE_API + `/reservation/${uuid}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

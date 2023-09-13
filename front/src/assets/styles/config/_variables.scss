@@ -4,7 +4,7 @@
 
   // Colors
   --color-primary: rgb(var(--color-primary-rgb));
-  --color-secondary: #d56ef6;
+  --color-secondary: var(--color-primary);
   --color-white: #fff;
   --color-black: #292929;
   --color-grey: #9b9aa3;

@@ -242,24 +242,6 @@ const changeImage = (image) => {
           text-align: center;
       }
 
-    input[type="text"],
-    input[type="number"],
-    textarea{
-      width: 100%;
-      background-color: transparent;
-      border: 1px solid var(--color-primary);
-      outline: 0;
-      padding: .5em;
-      color: var(--color-primary);
-      border-radius: .7rem;
-      resize: none;
-      appearance: textfield;
-
-      &:focus{
-        outline: 1px solid var(--color-primary);
-      }
-    }
-
       .disabled{
           position: absolute;
           top: 0;
