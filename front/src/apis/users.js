@@ -47,19 +47,18 @@ export function insertUser(user) {
 }
 
 
-export function updateUser(user) {
+export function updateUser(userID, description, birthdayDate) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(BASE_API + `/user`, {
-        method: 'POST',
+      const response = await fetch(BASE_API + `/user/${userID}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify({description, birthdayDate})
       })
-
       const data = await response.json()
-      resolve(true)
+      resolve(data)
     } catch (error) {
       console.error(ERROR_MESSAGE, error)
       reject(error)

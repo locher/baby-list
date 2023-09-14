@@ -1,6 +1,7 @@
 input[type="text"],
 input[type="number"],
 input[type="email"],
+input[type="date"],
 textarea{
   width: 100%;
   background-color: transparent;
@@ -14,5 +15,23 @@ textarea{
 
   &:focus{
     outline: 1px solid var(--color-primary);
+  }
+}
+
+.form{
+  &__single{
+    margin-bottom: 1em;
+  }
+
+  &__label{
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: .2em;
+  }
+
+  &__notice{
+    display: block;
+    font-size: .8em;
+    margin-top: .3em;
   }
 }

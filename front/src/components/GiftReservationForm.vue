@@ -47,27 +47,3 @@
         <BtnDefault>Réserver</BtnDefault>
     </form>
 </template>
-
-<style scoped lang="scss">
-    .form{
-        &__single{
-            margin-bottom: 1em;
-        }
-
-        &__label{
-            display: block;
-            font-size: 1.2em;
-            margin-bottom: .2em;
-        }
-
-        &__input{
-
-        }
-
-        &__notice{
-            display: block;
-            font-size: .8em;
-            margin-top: .3em;
-        }
-    }
-</style>

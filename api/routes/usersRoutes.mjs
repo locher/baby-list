@@ -1,5 +1,6 @@
 import express from 'express';
 import { connection } from "../connection.mjs";
+import {itemsRoutes} from "./itemsRoutes.mjs";
 
 export const usersRoutes = express.Router();
 
@@ -26,6 +27,27 @@ usersRoutes.get('/users/:id', (req, res) => {
             res.status(500).send('Error getting gifts');
         } else {
             res.json(results);
+        }
+    });
+});
+
+// Update item
+itemsRoutes.put('/user/:id', (req, res) => {
+    const id = req.params.id
+    const { description, birthdayDate } = req.body
+
+    console.log(description, birthdayDate)
+
+    connection.query('UPDATE users SET description = ?, birthday_date = ? WHERE id = ?', [description, birthdayDate, id], (err, result) => {
+        if (err) {
+            console.error('Error updating user:', err);
+            res.status(500).send('Error updating user');
+        } else {
+            if (result.affectedRows === 0) {
+                res.status(404).send('Item not found');
+            } else {
+                res.json('ok');
+            }
         }
     });
 });

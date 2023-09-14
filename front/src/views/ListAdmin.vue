@@ -4,7 +4,6 @@
 
     import {onBeforeMount, ref} from "vue";
     import GiftForm from "@/components/GiftForm.vue";
-    import UserForm from "@/components/UserForm.vue";
     import UserInfos from "@/components/UserInfos.vue";
     import BtnDefault from "@/components/BtnDefault.vue";
 

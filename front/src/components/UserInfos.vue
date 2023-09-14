@@ -1,12 +1,15 @@
 <script setup>
 
   // Props
-  import {computed} from "vue";
+  import {computed, ref} from "vue";
   import IlluBaby from "@/components/icons/IlluBaby.vue";
   import IconBlob from "@/components/icons/IconBlob.vue";
   import IconBaby from "@/components/icons/IconBaby.vue";
-  import {object} from "underscore";
+  import BtnDefault from "@/components/BtnDefault.vue";
+  import ModalItem from "@/components/ModalItem.vue";
+  import UserForm from "@/components/UserForm.vue";
 
+  // Props
   const props = defineProps({
       user: {
           type: Object,
@@ -20,6 +23,9 @@
       }
   })
 
+  // Refs
+  const isEditFormOpen = ref(false)
+
   // Computed
   const formatedDescription = computed(() => {
       const paragraphs = props.user.description.split('\n')
@@ -27,6 +33,17 @@
           return paragraph.length > 1 ? `<p>${paragraph}</p>` : ''
       }).join('');
   })
+
+  // Methods
+  const openEditForm = () => {
+      isEditFormOpen.value = true
+  }
+
+  const userUpdated = (data) => {
+      isEditFormOpen.value = false
+      props.user.birthday_date = new Date(data.birthdayDate.value)
+      props.user.description = data.description.value
+  }
 
 </script>
 
@@ -48,7 +65,12 @@
 
     <div class="description wrapper">
         <div v-if="user.description" v-html="formatedDescription" class="description__content"></div>
+        <BtnDefault v-if="isAdmin" class="description__edit" size="tiny" :border="true" @click="openEditForm()">Modifier les infos</BtnDefault>
     </div>
+
+    <ModalItem :isOpen="isEditFormOpen" v-if="isEditFormOpen" @close-modal="() => { isEditFormOpen = false }">
+        <UserForm :birthday-date="user.birthday_date" :description="user.description" @user-updated="(data) => { userUpdated(data) }"/>
+    </ModalItem>
 
 </template>
 
@@ -110,6 +132,10 @@
             p + p{
                 margin-top: .8em;
             }
+        }
+
+        &__edit{
+            margin-top: 2rem;
         }
     }
 </style>
