@@ -1,10 +1,12 @@
 :root {
   // Colors RGB
-  --color-primary-rgb: 91, 182, 149;
+  --color-primary-rgb: 163, 204, 171;
+  --color-secondary-rgb: 52, 103, 92;
+  --color-tertiary-rgb: 242, 104, 0;
 
   // Colors
   --color-primary: rgb(var(--color-primary-rgb));
-  --color-secondary: var(--color-primary);
+  --color-secondary: rgb(var(--color-secondary-rgb));
   --color-white: #fff;
   --color-black: #292929;
   --color-grey: #9b9aa3;

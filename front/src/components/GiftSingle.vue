@@ -218,12 +218,16 @@ const priceRange = computed(() => {
   &__title{
     font-weight: 400;
     line-height: 1.35;
+    font-size: var(--p-font-size);
+    color: var(--color-secondary);
   }
 
   &__description{
     font-weight: 300;
     line-height: 1.4em;
     margin-top: .3em;
+    color: var(--color-secondary);
+    font-size: .85em;
   }
 
   &__image{

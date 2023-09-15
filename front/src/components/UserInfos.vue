@@ -107,10 +107,11 @@
                 align-items: center;
                 gap:1rem;
                 margin-top: 1rem;
+                color: var(--color-secondary);
 
                 svg{
-                    stroke: var(--color-primary) !important;
-                    fill: var(--color-primary) !important;
+                    stroke: var(--color-secondary);
+                    fill: var(--color-secondary);
                 }
             }
 
@@ -127,6 +128,7 @@
 
     .description{
         margin-top: 2.5rem;
+        color:var(--color-secondary);
 
         &__content{
             p + p{
