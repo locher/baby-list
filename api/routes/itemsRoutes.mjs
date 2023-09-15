@@ -49,6 +49,7 @@ itemsRoutes.get('/items/:type/user/:id', (req, res) => {
 
 // Delete gift
 itemsRoutes.delete('/items/:id', (req, res) => {
+
     const id = req.params.id
 
     // DELETING GIFT
@@ -67,8 +68,6 @@ itemsRoutes.delete('/items/:id', (req, res) => {
                         connection.query('DELETE FROM reservations WHERE reservations.id_gift = ?', id, (err, results) => {
                             if (err) {
                                 console.error('Error deleting gift:', err);
-                            } else {
-                                res.json(results);
                             }
                         });
                     }
@@ -190,8 +189,7 @@ itemsRoutes.post('/items/:item/reserve', (req, res) => {
             };
 
             try {
-                const sendResult = await mailjet.post("send", { version: "v3.1" }).request(emailData);
-                console.log(sendResult.body);
+                const sendResult = await mailjet.post("send", { version: "v3.1" }).request(emailData)
             } catch (err) {
                 console.error(err.statusCode);
                 throw err; // Vous pouvez gérer l'erreur en renvoyant une réponse d'erreur appropriée ici
