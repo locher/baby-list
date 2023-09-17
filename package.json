@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "api_start": "cd api && node server.mjs",
-    "api_watch": "cd api && nodemon --inspect server.mjs",
     "dev": "cd front && vite",
     "build": "cd front && vite build",
     "preview": "cd front && vite preview",

@@ -3,7 +3,7 @@ import * as crypto from "crypto";
 
 import Client from 'node-mailjet';
 
-import {connection} from "../connection.mjs";
+import {connection} from "../connection.js";
 
 export const itemsRoutes = express.Router();
 
@@ -190,6 +190,7 @@ itemsRoutes.post('/items/:item/reserve', (req, res) => {
 
             try {
                 const sendResult = await mailjet.post("send", { version: "v3.1" }).request(emailData)
+                console.log('mail bien evoyé')
             } catch (err) {
                 console.error(err.statusCode);
                 throw err; // Vous pouvez gérer l'erreur en renvoyant une réponse d'erreur appropriée ici

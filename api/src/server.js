@@ -1,12 +1,13 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { connection } from "./connection.mjs";
-import { usersRoutes } from './routes/usersRoutes.mjs';
-import { itemsRoutes } from './routes/itemsRoutes.mjs';
 import cors from 'cors';
 import dotenv from 'dotenv'
 
-dotenv.config({path: '../.env'})
+import { connection } from "./connection.js";
+import { usersRoutes } from './routes/usersRoutes.js';
+import { itemsRoutes } from './routes/itemsRoutes.js';
+
+dotenv.config({path: '.env'})
 
 const app = express();
 
