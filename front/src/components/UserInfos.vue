@@ -110,8 +110,10 @@
                 color: var(--color-secondary);
 
                 svg{
-                    stroke: var(--color-secondary);
-                    fill: var(--color-secondary);
+                    stroke: var(--color-primary);
+                    fill: var(--color-primary);
+                    width: 2rem;
+                    height: auto;
                 }
             }
 

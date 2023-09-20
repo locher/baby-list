@@ -32,7 +32,11 @@
   --margin-fluid: clamp(4rem, calc(1rem + 7vh), 10rem);
   --margin-fluid--tiny: clamp(2rem, calc(1rem + 4vh), 7rem);
   --padding-global: calc(max(3vw, 2rem));
-  --gap: 20px;
+  --gap: 2rem;
+
+  @media (width < 600px){
+    --gap: 1.2rem;
+  }
 
   //Border
   --border-radius: 10px;
