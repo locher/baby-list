@@ -34,7 +34,7 @@
   --padding-global: calc(max(3vw, 2rem));
   --gap: 2rem;
 
-  @media (width < 600px){
+  @media (width < 600px) {
     --gap: 1.2rem;
   }
 

@@ -46,7 +46,6 @@ export function insertUser(user) {
   })
 }
 
-
 export function updateUser(userID, description, birthdayDate) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -55,7 +54,7 @@ export function updateUser(userID, description, birthdayDate) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({description, birthdayDate})
+        body: JSON.stringify({ description, birthdayDate })
       })
       const data = await response.json()
       resolve(data)

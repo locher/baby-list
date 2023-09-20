@@ -33,7 +33,6 @@ export async function deleteItem(itemID) {
 }
 
 export function insertItem(item) {
-
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(BASE_API + `/items`, {
@@ -74,7 +73,6 @@ export function updateItem(item) {
 }
 
 export function reserveItem(itemId, user, email, itemTitle) {
-
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(BASE_API + `/items/${itemId}/reserve`, {
@@ -83,7 +81,9 @@ export function reserveItem(itemId, user, email, itemTitle) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          email, user, itemTitle
+          email,
+          user,
+          itemTitle
         })
       })
 

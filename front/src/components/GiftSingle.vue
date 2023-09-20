@@ -2,10 +2,10 @@
 import BtnDefault from '@/components/BtnDefault.vue'
 import { computed, ref } from 'vue'
 import { deleteItem, insertItem } from '@/apis/item'
-import GiftReservationForm from "@/components/GiftReservationForm.vue";
-import PriceRange from "@/components/PriceRange.vue";
-import IconNoPicture from "@/components/icons/IconNoPicture.vue";
-import ModalItem from "@/components/ModalItem.vue";
+import GiftReservationForm from '@/components/GiftReservationForm.vue'
+import PriceRange from '@/components/PriceRange.vue'
+import IconNoPicture from '@/components/icons/IconNoPicture.vue'
+import ModalItem from '@/components/ModalItem.vue'
 
 // Emits
 const emit = defineEmits(['updateItem'])
@@ -35,8 +35,8 @@ const deleteTheGift = async () => {
   isDeleted.value = true
 
   // si problème lors de la suppression
-  if (!await deleteItem(props.item?.id)) {
-      isDeleted.value = false
+  if (!(await deleteItem(props.item?.id))) {
+    isDeleted.value = false
   }
 }
 
@@ -46,71 +46,68 @@ const restoreItem = async () => {
 }
 
 const reserveTheItem = async () => {
-    isReserveForm.value = true
+  isReserveForm.value = true
 }
 
 const reservationDone = (args) => {
-    isReserveForm.value = false
-    props.item.reservation_name = args.reservation_name
+  isReserveForm.value = false
+  props.item.reservation_name = args.reservation_name
 }
 
 // Computed
 
 const priceRange = computed(() => {
-    if (props.item.price < 30) return 1;
-    else if (props.item.price >= 30 && props.item.price < 100) return 2;
-    else if (props.item.price >= 100) return 3;
-});
-
+  if (props.item.price < 30) return 1
+  else if (props.item.price >= 30 && props.item.price < 100) return 2
+  else if (props.item.price >= 100) return 3
+})
 </script>
 
 <template>
   <div :class="`gift ${isDeleted ? 'deleted' : ''} ${props.item.isReserved ? 'reserved' : ''}`">
-
     <div class="gift__left">
-        <div class="gift__image">
-            <img :src="props.item.image" alt="" v-if="props.item.image">
-            <IconNoPicture v-else />
-            <BtnDefault
-                    v-if="props.item.link && !isDeleted"
-                    type="a"
-                    :href="props.item.link"
-                    target="_blank"
-                    size="tiny"
-            >Voir</BtnDefault
-            >
-        </div>
+      <div class="gift__image">
+        <img :src="props.item.image" alt="" v-if="props.item.image" />
+        <IconNoPicture v-else />
+        <BtnDefault
+          v-if="props.item.link && !isDeleted"
+          type="a"
+          :href="props.item.link"
+          target="_blank"
+          size="tiny"
+          >Voir</BtnDefault
+        >
+      </div>
     </div>
 
     <div class="gift__right">
-            <div class="gift__content">
-                <h3 class="gift__title">{{ props.item.title }}</h3>
-                <p v-if="props.item.description && !props.item.isReserved" class="gift__description">{{ props.item.description }}</p>
-            </div>
+      <div class="gift__content">
+        <h3 class="gift__title">{{ props.item.title }}</h3>
+        <p v-if="props.item.description && !props.item.isReserved" class="gift__description">
+          {{ props.item.description }}
+        </p>
+      </div>
 
-            <div v-if="props.isAdmin && !isDeleted" class="gift__edit">
-                <BtnDefault color="red" size="tiny" :border="true" @click="deleteTheGift"
-                >Supprimer</BtnDefault
-                >
-                <BtnDefault size="tiny" :border="true" @click="emit('updateItem', props.item)"
-                >Modifier</BtnDefault
-                >
-            </div>
+      <div v-if="props.isAdmin && !isDeleted" class="gift__edit">
+        <BtnDefault color="red" size="tiny" :border="true" @click="deleteTheGift"
+          >Supprimer</BtnDefault
+        >
+        <BtnDefault size="tiny" :border="true" @click="emit('updateItem', props.item)"
+          >Modifier</BtnDefault
+        >
+      </div>
 
-            <div v-if="!props.isAdmin && !isDeleted && !isPreview" class="gift__edit">
-                <BtnDefault
-                        v-if="!props.item.isReserved"
-                        @click="reserveTheItem"
-                        :border="true"
-                >Réserver</BtnDefault
-                >
-                <PriceRange :range="priceRange" v-if="props.item.price > 0 && !props.item.isReserved"/>
-            </div>
+      <div v-if="!props.isAdmin && !isDeleted && !isPreview" class="gift__edit">
+        <BtnDefault v-if="!props.item.isReserved" @click="reserveTheItem" :border="true"
+          >Réserver</BtnDefault
+        >
+        <PriceRange :range="priceRange" v-if="props.item.price > 0 && !props.item.isReserved" />
+      </div>
 
-          <!-- Réservé -->
-          <div v-if="!isDeleted && props.item.isReserved">
-              <p class="reserved__message">Réservé par {{ item?.reservation_name }}</p>
-          </div>
+      <!-- Réservé -->
+      <div v-if="!isDeleted && props.item.isReserved">
+        <p class="reserved__message">Réservé par {{ item?.reservation_name }}</p>
+      </div>
     </div>
 
     <div v-if="isDeleted" class="gift__deleted-message">
@@ -121,18 +118,27 @@ const priceRange = computed(() => {
     </div>
   </div>
 
-    <ModalItem :isOpen="isReserveForm" v-if="isReserveForm" class="gift__modalResa" @close-modal="isReserveForm = false">
-        <h2 class="gift__modalResa__title">Réserver <span>{{ props.item.title }}</span></h2>
-        <GiftReservationForm class="gift__modalResa__form" :item="item" @reservation-done="(args) => reservationDone(args)"/>
-        <GiftSingle :item="props?.item" :isPreview="true" class="gift__modalResa__gift"/>
-    </ModalItem>
-
-
+  <ModalItem
+    :isOpen="isReserveForm"
+    v-if="isReserveForm"
+    class="gift__modalResa"
+    @close-modal="isReserveForm = false"
+  >
+    <h2 class="gift__modalResa__title">
+      Réserver <span>{{ props.item.title }}</span>
+    </h2>
+    <GiftReservationForm
+      class="gift__modalResa__form"
+      :item="item"
+      @reservation-done="(args) => reservationDone(args)"
+    />
+    <GiftSingle :item="props?.item" :isPreview="true" class="gift__modalResa__gift" />
+  </ModalItem>
 </template>
 
 <style lang="scss">
 .gift {
-  --bg-color: rgba(var(--color-primary-rgb), .1);
+  --bg-color: rgba(var(--color-primary-rgb), 0.1);
   --text-color: var(--color-primary);
   --border-color: transparent;
 
@@ -148,12 +154,12 @@ const priceRange = computed(() => {
   grid-template-columns: 14rem auto;
   gap: var(--gap);
 
-  &--edit{
+  &--edit {
     border: 2px solid var(--color-primary);
   }
 
   &.deleted {
-    > :not(.gift__deleted-message){
+    > :not(.gift__deleted-message) {
       filter: grayscale(1);
     }
 
@@ -165,22 +171,21 @@ const priceRange = computed(() => {
     color: var(--color-primary);
     border: 2px solid var(--color-primary);
 
-
-    .gift__title, .gift__left{
-      opacity: .4;
+    .gift__title,
+    .gift__left {
+      opacity: 0.4;
     }
   }
 
-  .reserved__message{
+  .reserved__message {
     background-color: var(--color-primary);
     color: var(--color-white);
     display: inline-flex;
-    padding: .2em .4em;
+    padding: 0.2em 0.4em;
     margin-top: 1rem;
-
   }
 
-  &__content{
+  &__content {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -196,7 +201,7 @@ const priceRange = computed(() => {
       margin-right: 0.8rem;
     }
 
-    .priceRange{
+    .priceRange {
       flex-grow: 1;
       justify-content: right;
     }
@@ -215,22 +220,22 @@ const priceRange = computed(() => {
     }
   }
 
-  &__title{
+  &__title {
     font-weight: 400;
     line-height: 1.35;
     font-size: var(--p-font-size);
     color: var(--color-secondary);
   }
 
-  &__description{
+  &__description {
     font-weight: 300;
     line-height: 1.4em;
-    margin-top: .3em;
+    margin-top: 0.3em;
     color: var(--color-secondary);
-    font-size: .85em;
+    font-size: 0.85em;
   }
 
-  &__image{
+  &__image {
     width: 100%;
     aspect-ratio: 1;
     position: relative;
@@ -239,20 +244,19 @@ const priceRange = computed(() => {
     overflow: hidden;
     display: flex;
 
-    img{
+    img {
       object-fit: cover;
       width: 100%;
       height: 100%;
-
     }
 
-    svg{
+    svg {
       margin: auto;
       width: 6rem;
       height: 3rem;
     }
 
-    a{
+    a {
       position: absolute;
       bottom: 1rem;
       left: 50%;
@@ -261,22 +265,21 @@ const priceRange = computed(() => {
   }
 }
 
-.gift__modalResa{
-  &__title{
+.gift__modalResa {
+  &__title {
     font-size: 2em;
     font-weight: 700;
     margin-bottom: 3rem;
     line-height: 1em;
 
-    span{
+    span {
       font-weight: 300;
-      font-size: .8em;
+      font-size: 0.8em;
     }
   }
 
-  &__form{
+  &__form {
     margin-bottom: 3rem;
   }
 }
-
 </style>
