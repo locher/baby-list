@@ -7,12 +7,20 @@ import { connection } from "./connection.mjs";
 import { usersRoutes } from './routes/usersRoutes.mjs';
 import { itemsRoutes } from './routes/itemsRoutes.mjs';
 
-dotenv.config({path: '.env'})
+dotenv.config({ path: '.env' })
 
 const app = express();
 
+const corsOptions = {
+    origin: [process.env.APP_PUBLIC_URL],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+};
+
+
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 connection.connect((err) => {
     if (err) {

@@ -7,32 +7,6 @@ import {connection} from "../connection.mjs";
 
 export const itemsRoutes = express.Router();
 
-// Get all Gifts
-itemsRoutes.get('/items/:type', (req, res) => {
-    const type = req.params.type;
-    connection.query('SELECT * FROM items WHERE items.type = ?', type, (err, results) => {
-        if (err) {
-            console.error('Error getting items:', err);
-            res.status(500).send('Error getting items');
-        } else {
-            res.json(results);
-        }
-    });
-});
-
-// Get specific Gift
-itemsRoutes.get('/items/:id', (req, res) => {
-    const giftId = req.params.id
-    connection.query('SELECT * FROM items LEFT JOIN reservations ON items.id = reservations.id_gift WHERE items.id = ?', [giftId], (err, results) => {
-        if (err) {
-            console.error('Error getting items:', err);
-            res.status(500).send('Error getting items');
-        } else {
-            res.json(results);
-        }
-    });
-});
-
 // Get all items per user
 itemsRoutes.get('/items/:type/user/:id', (req, res) => {
     const userId = req.params.id;
