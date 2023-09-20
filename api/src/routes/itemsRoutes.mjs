@@ -3,7 +3,7 @@ import * as crypto from "crypto";
 
 import Client from 'node-mailjet';
 
-import {connection} from "../connection.js";
+import {connection} from "../connection.mjs";
 
 export const itemsRoutes = express.Router();
 

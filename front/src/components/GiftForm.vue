@@ -3,10 +3,11 @@
 import { insertItem, updateItem } from '@/apis/item'
 import {computed, reactive, ref} from 'vue'
 import BtnDefault from "@/components/BtnDefault.vue";
-import {OPENGRAPH_TOKEN} from "@/config/constants.js";
 import IconNoPicture from "@/components/icons/IconNoPicture.vue";
 import IconSpinner from "@/components/icons/IconSpinner.vue";
 import ModalItem from "@/components/ModalItem.vue";
+
+const OPENGRAPH_TOKEN = import.meta.env.VITE_OPENGRAPH_TOKEN
 
 // Props
 const props = defineProps({

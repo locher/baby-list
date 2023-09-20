@@ -1,6 +1,6 @@
 import express from 'express';
-import { connection } from "../connection.js";
-import {itemsRoutes} from "./itemsRoutes.js";
+import { connection } from "../connection.mjs";
+import {itemsRoutes} from "./itemsRoutes.mjs";
 
 export const usersRoutes = express.Router();
 

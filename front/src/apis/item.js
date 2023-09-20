@@ -1,6 +1,6 @@
-import { BASE_API } from '@/config/constants'
 import Item from '@/classes/Item'
 
+const BASE_API = import.meta.env.VITE_BASE_API
 const ERROR_MESSAGE = 'Erreur dans item.js'
 
 export async function getItems(userID, type) {
