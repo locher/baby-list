@@ -3,9 +3,9 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv'
 
-import { connection } from "./connection.mjs";
-import { usersRoutes } from './routes/usersRoutes.mjs';
-import { itemsRoutes } from './routes/itemsRoutes.mjs';
+import { connection } from "./connection.js";
+import { usersRoutes } from './routes/usersRoutes.js';
+import { itemsRoutes } from './routes/itemsRoutes.js';
 
 dotenv.config({ path: '.env' })
 

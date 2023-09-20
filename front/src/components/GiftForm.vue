@@ -16,15 +16,7 @@ const props = defineProps({
   },
   itemToUpdate: {
     type: Object,
-    required: false,
-    default: {
-      title: '',
-      description: '',
-      link: '',
-      id: '',
-      price: '',
-      image: ''
-    }
+    required: false
   }
 })
 
@@ -97,8 +89,6 @@ const clearForm = () => {
 }
 
 const submitForm = () => {
-  let result = null
-
   // Ajout
   if (!props.itemToUpdate.id) {
     addItem()

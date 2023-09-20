@@ -38,7 +38,7 @@ export function insertUser(user) {
       })
 
       const data = await response.json()
-      resolve(true)
+      resolve(data)
     } catch (error) {
       console.error(ERROR_MESSAGE, error)
       reject(error)
