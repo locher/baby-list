@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 import { connection } from "./connection.js";
 import { usersRoutes } from './routes/usersRoutes.js';
 import { itemsRoutes } from './routes/itemsRoutes.js';
+import {loginRoute} from "./routes/loginRoute.js";
 
 dotenv.config({ path: '.env' })
 
@@ -31,7 +32,7 @@ connection.connect((err) => {
 });
 
 // Import des routes
-app.use([usersRoutes, itemsRoutes]);
+app.use([usersRoutes, itemsRoutes, loginRoute]);
 
 const port = process.env.API_SERVER_PORT;
 
