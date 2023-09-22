@@ -7,3 +7,16 @@ import { RouterView } from 'vue-router'
     <RouterView />
   </main>
 </template>
+
+<style lang="scss">
+  #app{
+    min-height: 100vh;
+    display: flex;
+  }
+
+  main{
+    width: 100%;
+    min-height: 100vh;
+  }
+
+</style>

@@ -14,12 +14,18 @@
 
   // Methods
   const login = async () => {
+
+      if (!email.value || email.value === '' || !password || password.value === ''){
+          error.value = 'Email et mot de passe obligatoire !'
+          return
+      }
+
       const loginResult = await getLogin(email.value, password.value)
       const token = loginResult[0]?.token
 
       // If connection is impossible
       if (!loginResult){
-          error.value = 'Connexion impossible, réessaie plus tard :('
+          error.value = 'Connexion impossible, réessaie plus tard et préviens Loïc!'
       }
 
       // Of email or password is wrong
@@ -40,21 +46,53 @@
 </script>
 
 <template>
-    <form @submit.prevent="login">
-        <div class="form__single">
-            <label for="email" class="form__label">E-mail</label>
-            <input type="email" v-model.trim="email"/>
-        </div>
+    <div class="wrapper">
+        <form @submit.prevent="login">
+            <div class="form__single">
+                <label for="email" class="form__label">E-mail</label>
+                <input type="email" autofocus v-model.trim="email"/>
+            </div>
 
-        <div class="form__single">
-            <label for="password" class="form__label">Mot de passe</label>
-            <input type="password" v-model.trim="password"/>
-        </div>
+            <div class="form__single">
+                <label for="password" class="form__label">Mot de passe</label>
+                <input type="password" v-model.trim="password"/>
+            </div>
 
-        <BtnDefault>Me connecter</BtnDefault>
+            <div class="footer">
+                <BtnDefault>Me connecter</BtnDefault>
+                <p v-if="error">{{ error }}</p>
+            </div>
 
-        <p v-if="error">{{ error }}</p>
-    </form>
+
+        </form>
+    </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+
+
+.wrapper{
+    margin: auto;
+    min-height: 100vh;
+    display: flex;
+}
+
+form{
+    margin: auto;
+    width: 100%;
+    max-width: 50rem;
+}
+
+.footer{
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+
+    p{
+        font-weight: 500;
+        font-size: .9em;
+        color: var(--color-red);
+    }
+}
+
+</style>
