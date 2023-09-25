@@ -56,11 +56,6 @@ const emit = defineEmits(['updateItem'])
 
 const updateItem = (item) => {
   emit('updateItem', item)
-  window.scrollTo({
-    top: document.body.scrollHeight,
-    left: 0,
-    behavior: 'smooth'
-  })
 }
 </script>
 

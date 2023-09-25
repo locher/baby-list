@@ -57,6 +57,15 @@ const updateGiftsListAfterUpdate = (updatedGift) => {
     })
     openForm.value = false // Fermez le formulaire après l'ajout du cadeau si nécessaire
 }
+
+const onAfterEnter = () => {
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+    })
+}
+
 </script>
 
 <template>
@@ -72,17 +81,20 @@ const updateGiftsListAfterUpdate = (updatedGift) => {
             @update-item="(item) => updateItem(item)"
     />
 
-    <GiftForm
+    <div class="admin__addGift">
+        <BtnDefault @click="toggleForm" v-html="openForm ? 'Fermer la fenêtre' : 'Ajouter un cadeau'" :border="true"/>
+    </div>
+
+    <Transition @after-enter="onAfterEnter">
+        <GiftForm
             v-if="openForm"
             :id-user="user.id"
             :itemToUpdate="itemToUpdate"
             @gift-added="updateGiftsList"
             @gift-updated="(item) => updateGiftsListAfterUpdate(item)"
-    />
-
-    <div class="admin__addGift">
-        <BtnDefault @click="toggleForm" v-html="openForm ? 'Fermer la fenêtre' : 'Ajouter un cadeau'" :border="true"/>
-    </div>
+            class="gift-form"
+        />
+    </Transition>
 </template>
 
 <style lang="scss" scoped>
@@ -93,9 +105,13 @@ const updateGiftsListAfterUpdate = (updatedGift) => {
   margin-bottom: var(--gap);
 }
 
+.gift-form{
+    margin-bottom: var(--gap);
+}
+
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.1s ease;
 }
 
 .v-enter-from,

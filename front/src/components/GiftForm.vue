@@ -135,27 +135,31 @@ const fetchImageMeta = async () => {
 }
 
 const loadAllImages = async () => {
-  try {
-    isLoading.value = true
-    const encodedUrl = encodeURIComponent(props.itemToUpdate.link)
 
-    const response = await fetch(
-      `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}`
-    )
+  if(props.itemToUpdate.link){
+      try {
+          isLoading.value = true
+          const encodedUrl = encodeURIComponent(props.itemToUpdate.link)
 
-    const data = await response.json()
+          const response = await fetch(
+              `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}`
+          )
 
-    allImages.value = data?.htmlInferred?.images
+          const data = await response.json()
 
-    if (allImages.value.length > 0) {
-      isModalImagesOpen.value = true
-    }
+          allImages.value = data?.htmlInferred?.images
 
-    isLoading.value = false
-  } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données.", error)
-    isLoading.value = false
+          if (allImages.value.length > 0) {
+              isModalImagesOpen.value = true
+          }
+
+          isLoading.value = false
+      } catch (error) {
+          console.error("Une erreur s'est produite lors de la récupération des données.", error)
+          isLoading.value = false
+      }
   }
+
 }
 
 const changeImage = (image) => {
@@ -179,7 +183,7 @@ const changeImage = (image) => {
           <img :src="props.itemToUpdate.image" alt="" v-if="props.itemToUpdate.image" />
           <IconNoPicture v-else />
         </div>
-        <BtnDefault :border="true" size="tiny" @click.prevent="loadAllImages"
+        <BtnDefault :border="true" size="tiny" @click.prevent="loadAllImages" v-if="props.itemToUpdate.link"
           >Modifier l'image</BtnDefault
         >
       </div>
