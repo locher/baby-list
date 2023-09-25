@@ -5,6 +5,7 @@
   import {useAuthStore} from "@/stores/auth.js";
   import router from "@/router/index.js";
   import BtnLink from "@/components/BtnLink.vue";
+  import LoginFormTemplate from "@/components/LoginFormTemplate.vue";
 
   // Refs
   const email = ref()
@@ -51,10 +52,9 @@
 </script>
 
 <template>
-    <div class="wrapper">
-        <form @keydown.enter.prevent="login">
-            <h1>Connexion à l'administration</h1>
-
+    <LoginFormTemplate @keydown.enter.prevent="login">
+        <template #title>Connexion à l'administration</template>
+        <template #inputs>
             <div class="form__single">
                 <label for="email" class="form__label">E-mail</label>
                 <input type="email" autofocus v-model.trim="email"/>
@@ -65,48 +65,17 @@
                 <input type="password" v-model.trim="password"/>
                 <BtnLink @click.prevent="passwordLost" @keydown.enter.prevent="null" class="password--forget">Mot de passe oublié ?</BtnLink>
             </div>
+        </template>
 
-            <div class="footer">
-                <BtnDefault :isSubmit="true" @click.prevent="login">Me connecter</BtnDefault>
-                <p v-if="error" v-html="error"></p>
-            </div>
-
-
-        </form>
-    </div>
+        <template #footer>
+            <BtnDefault :isSubmit="true" @click.prevent="login">Me connecter</BtnDefault>
+            <p v-if="error" v-html="error" class="error"></p>
+        </template>
+    </LoginFormTemplate>
 </template>
 
 <style lang="scss" scoped>
-h1{
-    margin-bottom: 1em;
-}
-
-.wrapper{
-    margin: auto;
-    min-height: 100vh;
-    display: flex;
-}
-
-form{
-    margin: auto;
-    width: 100%;
-    max-width: 50rem;
-}
-
-.footer{
-    display: flex;
-    align-items: center;
-    gap: var(--gap);
-
-    p{
-        font-weight: 500;
-        font-size: .9em;
-        color: var(--color-red);
-    }
-}
-
 .password--forget{
     margin-top: .5em;
 }
-
 </style>

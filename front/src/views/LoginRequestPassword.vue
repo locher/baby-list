@@ -3,6 +3,8 @@
 import BtnDefault from "@/components/BtnDefault.vue";
 import {ref} from "vue";
 import {requestPassword} from "@/apis/login.js";
+import LoginForm from "@/views/LoginForm.vue";
+import LoginFormTemplate from "@/components/LoginFormTemplate.vue";
 
 // Refs
 const email = ref('')
@@ -37,60 +39,21 @@ const resetPassword = async () => {
 </script>
 
 <template>
-    <div class="wrapper">
-        <form @submit.prevent="resetPassword">
-            <h1>Mot de passe oublié ?</h1>
 
+    <LoginFormTemplate @submit.prevent="resetPassword">
+        <template #title>Mot de passe oublié ?</template>
+
+        <template #inputs>
             <div class="form__single">
                 <label for="email" class="form__label">E-mail</label>
                 <input type="email" autofocus v-model.trim="email"/>
             </div>
+        </template>
 
-            <div class="footer">
-                <BtnDefault>Réinitialiser mon mot de passe</BtnDefault>
-                <p v-if="error" v-html="error" class="error"></p>
-                <p v-if="validation" class="valid">Un email t'a été envoyé !</p>
-            </div>
-
-
-        </form>
-    </div>
+        <template #footer>
+            <BtnDefault>Réinitialiser mon mot de passe</BtnDefault>
+            <p v-if="error" v-html="error" class="error"></p>
+            <p v-if="validation" class="valid">Un email t'a été envoyé !</p>
+        </template>
+    </LoginFormTemplate>
 </template>
-
-<style lang="scss" scoped>
-
-h1{
-    margin-bottom: 1em;
-}
-
-
-.wrapper{
-    margin: auto;
-    min-height: 100vh;
-    display: flex;
-}
-
-form{
-    margin: auto;
-    width: 100%;
-    max-width: 50rem;
-}
-
-.footer{
-    display: flex;
-    align-items: center;
-    gap: var(--gap);
-
-    .error{
-        font-weight: 500;
-        font-size: .9em;
-        color: var(--color-red);
-    }
-
-    .valid{
-        font-weight: 500;
-        font-size: .9em;
-    }
-}
-
-</style>

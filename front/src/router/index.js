@@ -27,19 +27,19 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginPage.vue'),
+      component: () => import('../views/LoginForm.vue'),
       meta: { requiresAuth: false }
     },
     {
       path: '/mot-de-passe-oublie',
       name: 'passwordForgot',
-      component: () => import('../views/PasswordForgot.vue'),
+      component: () => import('../views/LoginRequestPassword.vue'),
       meta: { requiresAuth: false }
     },
     {
       path: '/changement-mot-de-passe/:uuid',
       name: 'changePassword',
-      component: () => import('../views/ChangePassword.vue'),
+      component: () => import('../views/LoginChangePassword.vue'),
       meta: { requiresAuth: false }
     },
     {
