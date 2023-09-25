@@ -4,6 +4,7 @@
   import {getLogin} from "@/apis/login.js";
   import {useAuthStore} from "@/stores/auth.js";
   import router from "@/router/index.js";
+  import BtnLink from "@/components/BtnLink.vue";
 
   // Refs
   const email = ref()
@@ -16,7 +17,7 @@
   const login = async () => {
 
       if (!email.value || email.value === '' || !password || password.value === ''){
-          error.value = 'Email et mot de passe obligatoire !'
+          error.value = 'Email et mot de passe obligatoire&nbsp;!'
           return
       }
 
@@ -25,7 +26,7 @@
 
       // If connection is impossible
       if (!loginResult){
-          error.value = 'Connexion impossible, réessaie plus tard et préviens Loïc!'
+          error.value = 'Connexion impossible, réessaie plus tard et préviens Loïc&nbsp;!'
       }
 
       // Of email or password is wrong
@@ -48,6 +49,8 @@
 <template>
     <div class="wrapper">
         <form @submit.prevent="login">
+            <h1>Connexion à l'administration</h1>
+
             <div class="form__single">
                 <label for="email" class="form__label">E-mail</label>
                 <input type="email" autofocus v-model.trim="email"/>
@@ -56,11 +59,12 @@
             <div class="form__single">
                 <label for="password" class="form__label">Mot de passe</label>
                 <input type="password" v-model.trim="password"/>
+                <BtnLink @click.prevent="router.push({name:'passwordForgot'})" class="password--forget">Mot de passe oublié ?</BtnLink>
             </div>
 
             <div class="footer">
                 <BtnDefault>Me connecter</BtnDefault>
-                <p v-if="error">{{ error }}</p>
+                <p v-if="error" v-html="error"></p>
             </div>
 
 
@@ -69,7 +73,9 @@
 </template>
 
 <style lang="scss" scoped>
-
+h1{
+    margin-bottom: 1em;
+}
 
 .wrapper{
     margin: auto;
@@ -93,6 +99,10 @@ form{
         font-size: .9em;
         color: var(--color-red);
     }
+}
+
+.password--forget{
+    margin-top: .5em;
 }
 
 </style>

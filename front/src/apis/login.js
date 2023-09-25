@@ -33,3 +33,24 @@ export async function checkToken(token) {
         throw error;
     }
 }
+
+export async function requestPassword(email) {
+    try {
+        const response = await fetch(BASE_API + `/request-password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({email})
+        });
+
+        if (!response.ok) {
+            throw new Error('Réponse HTTP non valide');
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        throw error;
+    }
+}

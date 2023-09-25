@@ -25,6 +25,12 @@ const router = createRouter({
       meta: { requiresAuth: false }
     },
     {
+      path: '/mot-de-passe-oublie',
+      name: 'passwordForgot',
+      component: () => import('../views/PasswordForgot.vue'),
+      meta: { requiresAuth: false }
+    },
+    {
       path: '/delete-reservation/:uuid',
       name: 'delete-reservation',
       component: () => import('../views/DeleteReservation.vue'),
