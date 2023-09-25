@@ -57,7 +57,7 @@ export async function requestPassword(email) {
 
 export async function changePassword(newPassword, uuid) {
     try {
-        const response = await fetch(BASE_API + `/change-password`, {
+        const response = await fetch(BASE_API + `/redefinir-mot-de-passe`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
