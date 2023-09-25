@@ -44,11 +44,15 @@
 
   }
 
+  const passwordLost = () => {
+      router.push({name:'passwordForgot'})
+  }
+
 </script>
 
 <template>
     <div class="wrapper">
-        <form @submit.prevent="login">
+        <form @keydown.enter.prevent="login">
             <h1>Connexion à l'administration</h1>
 
             <div class="form__single">
@@ -59,11 +63,11 @@
             <div class="form__single">
                 <label for="password" class="form__label">Mot de passe</label>
                 <input type="password" v-model.trim="password"/>
-                <BtnLink @click.prevent="router.push({name:'passwordForgot'})" class="password--forget">Mot de passe oublié ?</BtnLink>
+                <BtnLink @click.prevent="passwordLost" @keydown.enter.prevent="null" class="password--forget">Mot de passe oublié ?</BtnLink>
             </div>
 
             <div class="footer">
-                <BtnDefault>Me connecter</BtnDefault>
+                <BtnDefault :isSubmit="true" @click.prevent="login">Me connecter</BtnDefault>
                 <p v-if="error" v-html="error"></p>
             </div>
 

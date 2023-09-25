@@ -19,6 +19,12 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/delete-reservation/:uuid',
+      name: 'delete-reservation',
+      component: () => import('../views/DeleteReservation.vue'),
+      meta: { requiresAuth: false }
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginPage.vue'),
@@ -31,9 +37,9 @@ const router = createRouter({
       meta: { requiresAuth: false }
     },
     {
-      path: '/delete-reservation/:uuid',
-      name: 'delete-reservation',
-      component: () => import('../views/DeleteReservation.vue'),
+      path: '/changement-mot-de-passe/:uuid',
+      name: 'changePassword',
+      component: () => import('../views/ChangePassword.vue'),
       meta: { requiresAuth: false }
     },
     {

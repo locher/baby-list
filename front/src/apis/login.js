@@ -54,3 +54,20 @@ export async function requestPassword(email) {
         throw error;
     }
 }
+
+export async function changePassword(newPassword, uuid) {
+    try {
+        const response = await fetch(BASE_API + `/change-password`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({newPassword, uuid})
+        });
+
+        return await response.json();
+
+    } catch (error) {
+        throw error;
+    }
+}

@@ -31,7 +31,12 @@ const props = defineProps({
     type: String,
     required: false,
     default: 'normal'
-  }
+  },
+    isSubmit:{
+      type: Boolean,
+      required: false,
+      default:false
+    }
 })
 
 const btnClasses = computed(() => {
@@ -43,7 +48,7 @@ const btnClasses = computed(() => {
 </script>
 
 <template>
-  <button v-if="type === 'button'" :class="btnClasses">
+  <button v-if="type === 'button'" :class="btnClasses" :type="isSubmit ? 'submit' : 'button'">
     <slot></slot>
   </button>
 
