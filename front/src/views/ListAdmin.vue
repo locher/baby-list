@@ -7,6 +7,7 @@ import GiftForm from '@/components/GiftForm.vue'
 import UserInfos from '@/components/UserInfos.vue'
 import BtnDefault from '@/components/BtnDefault.vue'
 import LoaderBlock from "@/components/LoaderBlock.vue";
+import ModalItem from "@/components/ModalItem.vue";
 
 // Refs
 const user = ref({})
@@ -80,7 +81,7 @@ const updateGiftsListAfterUpdate = (updatedGift) => {
     />
 
     <div class="admin__addGift">
-        <BtnDefault @click="toggleForm" v-html="openForm ? 'Fermer la fenêtre' : 'Ajouter un cadeau'"/>
+        <BtnDefault @click="toggleForm" v-html="openForm ? 'Fermer la fenêtre' : 'Ajouter un cadeau'" :border="true"/>
     </div>
 </template>
 

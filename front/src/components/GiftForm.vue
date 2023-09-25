@@ -112,8 +112,6 @@ const fetchImageMeta = async () => {
 
       const data = await response.json()
 
-      console.log(data)
-
       // Récupère le titre
       const title = data?.openGraph?.title || data.hybridGraph?.title || ''
       if (!props.itemToUpdate.title) {
@@ -131,7 +129,6 @@ const fetchImageMeta = async () => {
 
       isLoading.value = false
     } catch (error) {
-      console.error("Une erreur s'est produite lors de la récupération des données.", error)
       isLoading.value = false
     }
   }
@@ -169,7 +166,8 @@ const changeImage = (image) => {
 
 <template>
   <div class="wrapper">
-    <ModalItem v-if="isModalImagesOpen" :is-open="isModalImagesOpen">
+
+    <ModalItem v-if="isModalImagesOpen" @close-modal="() => isModalImagesOpen = false">
       <div class="modal__imgChoice">
         <img v-for="image in allImages" :src="image" alt="" @click="changeImage(image)" />
       </div>

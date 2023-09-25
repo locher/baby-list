@@ -1,30 +1,17 @@
 <script setup>
-import { ref } from 'vue'
-
-const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    required: false,
-    default: false
-  }
-})
-
-const showModal = ref(props.isOpen)
 
 // Emits
 const emit = defineEmits(['closeModal'])
 
 const closeModal = () => {
-  showModal.value = false
   emit('closeModal')
 }
 </script>
 
 <template>
-  <div v-if="showModal" class="modal__background" @click="closeModal"></div>
+  <div class="modal__background" @click="closeModal"></div>
   <div class="modal" @keydown.esc="closeModal" @click.self="closeModal">
     <div
-      v-if="showModal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
