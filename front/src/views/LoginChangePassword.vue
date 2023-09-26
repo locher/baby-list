@@ -39,7 +39,7 @@ const changePasswordSubmit = async () => {
             </div>
         </template>
         <template #footer>
-            <BtnDefault>Modifier mon mot de passe</BtnDefault>
+            <BtnDefault @click.prevent="changePasswordSubmit">Modifier mon mot de passe</BtnDefault>
             <p v-if="error" v-html="error" class="error"></p>
         </template>
     </LoginFormTemplate>

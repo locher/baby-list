@@ -1,6 +1,7 @@
 import Item from '@/classes/Item'
+import { VITE_BASE_API } from '../config/constants'
 
-const BASE_API = import.meta.env.VITE_BASE_API
+const BASE_API = VITE_BASE_API
 const ERROR_MESSAGE = 'Erreur dans item.js'
 
 export async function getItems(userID, type) {

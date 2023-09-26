@@ -6,7 +6,9 @@ import IconNoPicture from '@/components/icons/IconNoPicture.vue'
 import IconSpinner from '@/components/icons/IconSpinner.vue'
 import ModalItem from '@/components/ModalItem.vue'
 
-const OPENGRAPH_TOKEN = import.meta.env.VITE_OPENGRAPH_TOKEN
+import { VITE_OPENGRAPH_TOKEN } from '../config/constants'
+
+const OPENGRAPH_TOKEN = VITE_OPENGRAPH_TOKEN
 
 // Props
 const props = defineProps({

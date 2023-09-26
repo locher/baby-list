@@ -37,7 +37,7 @@ const router = createRouter({
       meta: { requiresAuth: false }
     },
     {
-      path: '/redefinir-mot-de-passe/:uuid',
+      path: '/reset-password/:uuid',
       name: 'changePassword',
       component: () => import('../views/LoginChangePassword.vue'),
       meta: { requiresAuth: false }

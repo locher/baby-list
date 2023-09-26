@@ -1,6 +1,7 @@
 import User from '@/classes/User.js'
+import { VITE_BASE_API } from '../config/constants'
 
-const BASE_API = import.meta.env.VITE_BASE_API
+const BASE_API = VITE_BASE_API
 const ERROR_MESSAGE = 'Erreur lors de la récupération de la liste des utilisateurs'
 
 export async function getUsers() {

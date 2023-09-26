@@ -51,7 +51,7 @@ const resetPassword = async () => {
         </template>
 
         <template #footer>
-            <BtnDefault>Réinitialiser mon mot de passe</BtnDefault>
+            <BtnDefault @click.prevent="resetPassword">Réinitialiser mon mot de passe</BtnDefault>
             <p v-if="error" v-html="error" class="error"></p>
             <p v-if="validation" class="valid">Un email t'a été envoyé !</p>
         </template>

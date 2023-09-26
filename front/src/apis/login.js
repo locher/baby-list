@@ -1,4 +1,6 @@
-const BASE_API = import.meta.env.VITE_BASE_API
+import { VITE_BASE_API } from "../config/constants"
+
+const BASE_API = VITE_BASE_API
 const ERROR_MESSAGE = 'Erreur dans login.js'
 
 export async function getLogin(email, password) {
@@ -57,7 +59,7 @@ export async function requestPassword(email) {
 
 export async function changePassword(newPassword, uuid) {
     try {
-        const response = await fetch(BASE_API + `/redefinir-mot-de-passe`, {
+        const response = await fetch(BASE_API + `/change-password`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
