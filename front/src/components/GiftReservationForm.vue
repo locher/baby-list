@@ -43,6 +43,6 @@ const submitReserveItem = async () => {
       <span class="form__notice">Pour valider ou annuler la réservation</span>
     </div>
 
-    <BtnDefault>Réserver</BtnDefault>
+    <BtnDefault buttonType="submit">Réserver</BtnDefault>
   </form>
 </template>

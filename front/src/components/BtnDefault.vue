@@ -32,10 +32,10 @@ const props = defineProps({
     required: false,
     default: 'normal'
   },
-    isSubmit:{
-      type: Boolean,
+    buttonType:{
+      type: String,
       required: false,
-      default:false
+      default: 'button'
     }
 })
 
@@ -45,10 +45,11 @@ const btnClasses = computed(() => {
 
   return classes.join(' ')
 })
+
 </script>
 
 <template>
-  <button v-if="type === 'button'" :class="btnClasses" :type="isSubmit ? 'submit' : 'button'">
+  <button v-if="type === 'button'" :class="btnClasses" :type="buttonType">
     <slot></slot>
   </button>
 

@@ -209,8 +209,8 @@ const changeImage = (image) => {
           <input type="text" placeholder="Prix" v-model.trim="props.itemToUpdate.price" />
 
           <div class="gift__buttons">
-            <BtnDefault v-if="props.itemToUpdate.id">Modifier le cadeau</BtnDefault>
-            <BtnDefault v-else>Ajouter à la liste</BtnDefault>
+            <BtnDefault v-if="props.itemToUpdate.id" buttonType="submit">Modifier le cadeau</BtnDefault>
+            <BtnDefault v-else buttonType="submit">Ajouter à la liste</BtnDefault>
           </div>
         </div>
       </div>

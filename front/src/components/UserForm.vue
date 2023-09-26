@@ -42,7 +42,7 @@ const updateAccountInfos = async () => {
       <textarea v-model="description"></textarea>
     </div>
 
-    <BtnDefault>Modifier le compte</BtnDefault>
+    <BtnDefault buttonType="submit">Modifier le compte</BtnDefault>
   </form>
 </template>
 

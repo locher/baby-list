@@ -24,8 +24,31 @@ if (uuid) {
 </script>
 
 <template>
-  {{ message }}
-  <BtnDefault @click="router.push({ name: 'list' })">Retour à la liste</BtnDefault>
+    <div class="delete-reservation">
+
+
+  <div class="wrapper">
+      <h1>{{ message }}</h1>
+      <BtnDefault @click="router.push({ name: 'list' })">Retour à la liste</BtnDefault>
+  </div>
+    </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+
+.delete-reservation{
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+
+  .wrapper{
+    margin: auto;
+    text-align: center;
+  }
+}
+
+h1{
+  font-size: 1.4em;
+  margin-bottom: .4em;
+}
+</style>
