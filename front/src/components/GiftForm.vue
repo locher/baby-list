@@ -108,11 +108,19 @@ const fetchImageMeta = async () => {
       isLoading.value = true
       const encodedUrl = encodeURIComponent(props.itemToUpdate.link)
 
-      const response = await fetch(
+      let response = await fetch(
         `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}`
       )
 
+      if(!response.ok){
+        response = await fetch(
+        `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}&use_proxy=true`
+      )
+      }
+
       const data = await response.json()
+
+      console.log(data)
 
       // Récupère le titre
       const title = data?.openGraph?.title || data.hybridGraph?.title || ''
@@ -143,9 +151,17 @@ const loadAllImages = async () => {
           isLoading.value = true
           const encodedUrl = encodeURIComponent(props.itemToUpdate.link)
 
-          const response = await fetch(
+          let response = await fetch(
               `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}`
           )
+
+          if(!response.ok){
+            if(!response.ok){
+        response = await fetch(
+        `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}&use_proxy=true`
+      )
+      }
+          }
 
           const data = await response.json()
 
