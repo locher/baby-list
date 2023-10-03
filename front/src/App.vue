@@ -9,14 +9,13 @@ import { RouterView } from 'vue-router'
 </template>
 
 <style lang="scss">
-  #app{
-    min-height: 100vh;
-    display: flex;
-  }
+#app {
+  min-height: 100vh;
+  display: flex;
+}
 
-  main{
-    width: 100%;
-    min-height: 100vh;
-  }
-
+main {
+  width: 100%;
+  min-height: 100vh;
+}
 </style>

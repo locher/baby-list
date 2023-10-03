@@ -1,11 +1,11 @@
 <script setup>
-    import IconSpinner from "@/components/icons/IconSpinner.vue";
+import IconSpinner from '@/components/icons/IconSpinner.vue'
 </script>
 
 <template>
-    <div class="loader">
-        <IconSpinner/>
-    </div>
+  <div class="loader">
+    <IconSpinner />
+  </div>
 </template>
 
 <style lang="scss">

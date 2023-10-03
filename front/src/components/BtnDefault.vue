@@ -32,11 +32,11 @@ const props = defineProps({
     required: false,
     default: 'normal'
   },
-    buttonType:{
-      type: String,
-      required: false,
-      default: 'button'
-    }
+  buttonType: {
+    type: String,
+    required: false,
+    default: 'button'
+  }
 })
 
 const btnClasses = computed(() => {
@@ -45,7 +45,6 @@ const btnClasses = computed(() => {
 
   return classes.join(' ')
 })
-
 </script>
 
 <template>

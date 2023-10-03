@@ -45,8 +45,7 @@ const filteredGifts = computed(() => {
     return props.items.filter((item) => item.price < 30 && item.price > 0)
   else if (filter.value === 2)
     return props.items.filter((item) => item.price >= 30 && item.price < 100)
-  else if (filter.value === 3)
-    return props.items.filter((item) => item.price >= 100)
+  else if (filter.value === 3) return props.items.filter((item) => item.price >= 100)
 })
 
 // Emits

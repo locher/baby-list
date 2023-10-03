@@ -7,15 +7,15 @@
 </template>
 
 <style lang="scss">
-.btLink{
+.btLink {
   background: transparent;
-  border:0;
-  padding:0;
-  margin:0;
+  border: 0;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
   font-weight: 500;
   font-size: 1.3rem;
   line-height: 1em;
-  color: var(--color-grey)
+  color: var(--color-grey);
 }
 </style>

@@ -112,10 +112,10 @@ const fetchImageMeta = async () => {
         `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}`
       )
 
-      if(!response.ok){
+      if (!response.ok) {
         response = await fetch(
-        `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}&use_proxy=true`
-      )
+          `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}&use_proxy=true`
+        )
       }
 
       const data = await response.json()
@@ -145,39 +145,37 @@ const fetchImageMeta = async () => {
 }
 
 const loadAllImages = async () => {
+  if (props.itemToUpdate.link) {
+    try {
+      isLoading.value = true
+      const encodedUrl = encodeURIComponent(props.itemToUpdate.link)
 
-  if(props.itemToUpdate.link){
-      try {
-          isLoading.value = true
-          const encodedUrl = encodeURIComponent(props.itemToUpdate.link)
-
-          let response = await fetch(
-              `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}`
-          )
-
-          if(!response.ok){
-            if(!response.ok){
-        response = await fetch(
-        `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}&use_proxy=true`
+      let response = await fetch(
+        `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}`
       )
+
+      if (!response.ok) {
+        if (!response.ok) {
+          response = await fetch(
+            `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${OPENGRAPH_TOKEN}&use_proxy=true`
+          )
+        }
       }
-          }
 
-          const data = await response.json()
+      const data = await response.json()
 
-          allImages.value = data?.htmlInferred?.images
+      allImages.value = data?.htmlInferred?.images
 
-          if (allImages.value.length > 0) {
-              isModalImagesOpen.value = true
-          }
-
-          isLoading.value = false
-      } catch (error) {
-          console.error("Une erreur s'est produite lors de la récupération des données.", error)
-          isLoading.value = false
+      if (allImages.value.length > 0) {
+        isModalImagesOpen.value = true
       }
+
+      isLoading.value = false
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de la récupération des données.", error)
+      isLoading.value = false
+    }
   }
-
 }
 
 const changeImage = (image) => {
@@ -188,8 +186,7 @@ const changeImage = (image) => {
 
 <template>
   <div class="wrapper">
-
-    <ModalItem v-if="isModalImagesOpen" @close-modal="() => isModalImagesOpen = false">
+    <ModalItem v-if="isModalImagesOpen" @close-modal="() => (isModalImagesOpen = false)">
       <div class="modal__imgChoice">
         <img v-for="image in allImages" :src="image" alt="" @click="changeImage(image)" />
       </div>
@@ -201,7 +198,11 @@ const changeImage = (image) => {
           <img :src="props.itemToUpdate.image" alt="" v-if="props.itemToUpdate.image" />
           <IconNoPicture v-else />
         </div>
-        <BtnDefault :border="true" size="tiny" @click.prevent="loadAllImages" v-if="props.itemToUpdate.link"
+        <BtnDefault
+          :border="true"
+          size="tiny"
+          @click.prevent="loadAllImages"
+          v-if="props.itemToUpdate.link"
           >Modifier l'image</BtnDefault
         >
       </div>
@@ -225,7 +226,9 @@ const changeImage = (image) => {
           <input type="text" placeholder="Prix" v-model.trim="props.itemToUpdate.price" />
 
           <div class="gift__buttons">
-            <BtnDefault v-if="props.itemToUpdate.id" buttonType="submit">Modifier le cadeau</BtnDefault>
+            <BtnDefault v-if="props.itemToUpdate.id" buttonType="submit"
+              >Modifier le cadeau</BtnDefault
+            >
             <BtnDefault v-else buttonType="submit">Ajouter à la liste</BtnDefault>
           </div>
         </div>

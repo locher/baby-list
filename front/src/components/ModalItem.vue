@@ -1,5 +1,4 @@
 <script setup>
-
 // Emits
 const emit = defineEmits(['closeModal'])
 
@@ -11,12 +10,7 @@ const closeModal = () => {
 <template>
   <div class="modal__background" @click="closeModal"></div>
   <div class="modal" @keydown.esc="closeModal" @click.self="closeModal">
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-      class="modal__inner"
-    >
+    <div role="dialog" aria-modal="true" aria-labelledby="modal-title" class="modal__inner">
       <button class="modal__closeBtn closeBtn" @click="closeModal">
         <span class="closeBtn__title">Fermer la modale</span>
         <span class="closeBtn__icon">×</span>
