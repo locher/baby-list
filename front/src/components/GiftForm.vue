@@ -120,8 +120,6 @@ const fetchImageMeta = async () => {
 
       const data = await response.json()
 
-      console.log(data)
-
       // Récupère le titre
       const title = data?.openGraph?.title || data.hybridGraph?.title || ''
       if (!props.itemToUpdate.title) {
