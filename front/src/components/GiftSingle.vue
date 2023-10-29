@@ -83,7 +83,7 @@ const priceRange = computed(() => {
     <div class="gift__right">
       <div class="gift__content">
         <h3 class="gift__title">{{ props.item.title }}</h3>
-        <p v-if="props.item.description && !props.item.isReserved" class="gift__description">
+        <p v-if="props.item.description" class="gift__description">
           {{ props.item.description }}
         </p>
       </div>

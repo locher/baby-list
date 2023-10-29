@@ -13,7 +13,7 @@ dotenv.config({ path: '.env' })
 const app = express();
 
 const corsOptions = {
-    origin: [process.env.APP_PUBLIC_URL],
+    origin: [process.env.APP_PUBLIC_URL, 'http://localhost'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,

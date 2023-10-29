@@ -10,8 +10,8 @@ export const itemsRoutes = express.Router();
 // Get all items per user
 itemsRoutes.get('/items/:type/user/:id', (req, res) => {
     const userId = req.params.id;
-    const type = req.params.type
-    connection.query("SELECT items.*, reservations.id as reservation_id, reservations.reservation_name as reservation_name FROM items LEFT JOIN reservations ON items.id = reservations.id_gift WHERE items.id_user_owner = ?", userId, (err, results) => {
+    const type = req.params.type;
+    connection.query("SELECT items.*, reservations.id as reservation_id, reservations.reservation_name as reservation_name FROM items LEFT JOIN reservations ON items.id = reservations.id_gift WHERE items.id_user_owner = ? ORDER BY CASE WHEN reservations.id IS NULL THEN 1 ELSE 2 END, COALESCE(reservations.reservation_name, items.title), CASE WHEN reservations.reservation_name IS NOT NULL THEN 1 ELSE 2 END", userId, (err, results) => {
         if (err) {
             console.error('Error getting items:', err);
             res.status(500).send('Error getting items');
